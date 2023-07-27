@@ -52,12 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameThread;
 
-    private int panelWidth;
-    private int panelHeight;
+  //  private int panelWidth;
+   // private int panelHeight;
 
-    public GamePanel(int panelWidth, int panelHeight) {
-        this.panelWidth = panelWidth;
-        this.panelHeight = panelHeight;
+    public GamePanel() {
+       /* this.panelWidth = panelWidth;
+        this.panelHeight = panelHeight;*/
         
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
