@@ -2,11 +2,18 @@ package paintio;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 
@@ -17,7 +24,22 @@ public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Color> pathColors; 
     private LinkedList<LinkedList<Point>> previousPaths;
 
-    
+    private boolean useKeyboardControls = true; // Flag to indicate if keyboard controls are used
+    private boolean useMouseControls = false;   // Flag to indicate if mouse controls are used
+    private JButton keyboardButton;
+    private JButton mouseButton;
+
+    // Mouse arrow images
+    private ImageIcon arrowUpImage;
+    private ImageIcon arrowDownImage;
+    private ImageIcon arrowLeftImage;
+    private ImageIcon arrowRightImage;
+
+    // Mouse arrow rectangle bounds
+    private Rectangle arrowUpRect;
+    private Rectangle arrowDownRect;
+    private Rectangle arrowLeftRect;
+    private Rectangle arrowRightRect;
     
     final int originalTileSize = 16;
     final int scale = 3;
@@ -41,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     boolean isOutsideNewPainted;
 
-    int FPS = 10; // FPS
+    int FPS = 5; // FPS
     Keyhandler keyH = new Keyhandler();
     private Rectangle box ;
     Point snakeHead;
@@ -56,9 +78,79 @@ public class GamePanel extends JPanel implements Runnable {
    // private int panelHeight;
 
     public GamePanel() {
-       /* this.panelWidth = panelWidth;
-        this.panelHeight = panelHeight;*/
-        
+       // Initialize the mouse arrow images
+        arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\U.png");
+        arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\D.png");
+        arrowLeftImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\L.png");
+        arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\R.png");
+
+        // Initialize the mouse arrow rectangle bounds
+        arrowUpRect = new Rectangle(1600, 500, arrowUpImage.getIconWidth(), arrowUpImage.getIconHeight());
+        arrowDownRect = new Rectangle(1600, 700, arrowDownImage.getIconWidth(), arrowDownImage.getIconHeight());
+        arrowLeftRect = new Rectangle(1450, 630, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());
+        arrowRightRect = new Rectangle(1680, 630, arrowRightImage.getIconWidth(), arrowRightImage.getIconHeight());
+
+        // Initialize the buttons
+        keyboardButton = new JButton("Keyboard");
+        mouseButton = new JButton("Mouse");
+
+        // Set button bounds and action listeners
+        keyboardButton.setBounds(10, 10, 100, 30);
+        mouseButton.setBounds(120, 10, 100, 30);
+        keyboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                useKeyboardControls = true;
+                useMouseControls = false;
+            }
+        });
+        mouseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                useKeyboardControls = false;
+                useMouseControls = true;
+            }
+        });
+
+        // Add the buttons to the panel
+        this.add(keyboardButton);
+        this.add(mouseButton);
+
+        // Add mouse listener to handle mouse clicks
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (useMouseControls) {
+                    Point mousePoint = e.getPoint();
+                    if (arrowUpRect.contains(mousePoint)) {
+                        keyH.up = true;
+                        keyH.down = false;
+                        keyH.left = false;
+                        keyH.right = false;
+                    } else if (arrowDownRect.contains(mousePoint)) {
+                        keyH.up = false;
+                        keyH.down = true;
+                        keyH.left = false;
+                        keyH.right = false;
+                    } else if (arrowLeftRect.contains(mousePoint)) {
+                        keyH.up = false;
+                        keyH.down = false;
+                        keyH.left = true;
+                        keyH.right = false;
+                    } else if (arrowRightRect.contains(mousePoint)) {
+                        keyH.up = false;
+                        keyH.down = false;
+                        keyH.left = false;
+                        keyH.right = true;
+                    } else {
+                        keyH.up = false;
+                        keyH.down = false;
+                        keyH.left = false;
+                        keyH.right = false;
+                    }
+                }
+            }
+        });
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
@@ -119,6 +211,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (Point segment : snake) {
             g2d.setColor(Color.CYAN);
             g2d.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
+        }
+         if (useMouseControls) {
+            arrowUpImage.paintIcon(this, g2d, arrowUpRect.x, arrowUpRect.y);
+            arrowDownImage.paintIcon(this, g2d, arrowDownRect.x, arrowDownRect.y);
+            arrowLeftImage.paintIcon(this, g2d, arrowLeftRect.x, arrowLeftRect.y);
+            arrowRightImage.paintIcon(this, g2d, arrowRightRect.x, arrowRightRect.y);
         }
 
         

@@ -14,9 +14,7 @@ public class Main {
             frame.setResizable(true);
 
             // Create a GamePanel with the desired dimensions
-            int panelWidth = 300; // Adjust the width as needed
-            int panelHeight = 300; // Adjust the height as needed
-            GamePanel gamePanel = new GamePanel(panelWidth, panelHeight);
+            GamePanel gamePanel = new GamePanel();
 
             frame.add(gamePanel);
 
