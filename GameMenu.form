@@ -47,11 +47,9 @@
                   <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="GameSpeed" pref="435" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextField1" pref="435" max="32767" attributes="0"/>
-                          <Component id="StartBut" max="32767" attributes="0"/>
-                          <Component id="GameDiff" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jTextField1" pref="435" max="32767" attributes="0"/>
+                      <Component id="StartBut" max="32767" attributes="0"/>
+                      <Component id="GameDiff" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="229" max="32767" attributes="0"/>
               </Group>

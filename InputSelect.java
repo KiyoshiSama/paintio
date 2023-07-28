@@ -7,10 +7,17 @@ public class InputSelect extends javax.swing.JFrame {
     public boolean useMouseControls = false;
     public boolean useKeyboardControls = false;
     public boolean inputSelected = false;
-   
     
-    public InputSelect() {
+    private static GameMenu gameMenu;
+
+    
+    public InputSelect(GameMenu gameMenu) {
+        this.gameMenu = gameMenu;
         initComponents();
+
+    }
+    public void setGameMenu(GameMenu gameMenu) {
+        this.gameMenu = gameMenu;
     }
 
     
@@ -115,8 +122,8 @@ public class InputSelect extends javax.swing.JFrame {
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
                         frame.setResizable(true);
 
-                        // Create a GamePanel with the desired dimensions
-                        GamePanel gamePanel = new GamePanel();
+                        int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
+                        GamePanel gamePanel = new GamePanel(speedN);
 
                         // Set the chosen input mode in the GamePanel
                         gamePanel.setUseMouseControls(useMouseControls);
@@ -142,8 +149,9 @@ public class InputSelect extends javax.swing.JFrame {
                         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
                         frame.setResizable(true);
 
-                        // Create a GamePanel with the desired dimensions
-                        GamePanel gamePanel = new GamePanel();
+                        int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
+                        GamePanel gamePanel = new GamePanel(speedN);
+
 
                         // Set the chosen input mode in the GamePanel
                         gamePanel.setUseMouseControls(useMouseControls);
@@ -195,7 +203,7 @@ public class InputSelect extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InputSelect().setVisible(true);
+                new InputSelect(gameMenu).setVisible(true);
             }
         });
     }

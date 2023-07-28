@@ -85,10 +85,9 @@ public class GameMenu extends javax.swing.JFrame {
                 .addGap(197, 197, 197)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(GameSpeed, 0, 435, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                        .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                    .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(229, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -123,7 +122,20 @@ public class GameMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void GameSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameSpeedActionPerformed
-      
+       String speedS = GameSpeed.getSelectedItem().toString();
+        switch (speedS) {
+            case "LOW":
+                speedN = 5;
+                break;
+            case "MEDIUM":
+                speedN = 10;
+                break;
+            case "HIGH":
+                speedN = 16;
+                break;
+            default:
+                break;
+        }      
     }//GEN-LAST:event_GameSpeedActionPerformed
 
     private void GameDiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameDiffActionPerformed
@@ -132,29 +144,14 @@ public class GameMenu extends javax.swing.JFrame {
 
     private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
        setVisible(false);
-       InputSelect inputFrame = new InputSelect();
+       InputSelect inputFrame = new InputSelect(this);
        inputFrame.setVisible(true);
     }//GEN-LAST:event_StartButMouseClicked
 
     private void GameSpeedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GameSpeedItemStateChanged
-      String speedS = GameSpeed.getSelectedItem().toString();
-    if (null != speedS) switch (speedS) {
-        case "LOW":
-            speedN = 5;
-            break;
-        case "MEDIUM":
-            speedN = 10;
-            break;
-        case "HIGH":
-            speedN = 16;
-            break;
-        default:
-            break;
-    }
 
-    // Update the FPS value in the GamePanel instance
-    GamePanel gamePanel = new GamePanel();
-    gamePanel.setFPS(speedN);
+
+
         
     }//GEN-LAST:event_GameSpeedItemStateChanged
 

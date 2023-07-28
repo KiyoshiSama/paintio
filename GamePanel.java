@@ -38,8 +38,8 @@ public class GamePanel extends JPanel implements Runnable {
     int maxY = Integer.MIN_VALUE;
     private int size ;
 
-    GameMenu options = new GameMenu();
-    int FPS = 5; // FPS
+    
+    int FPS ; // FPS
     private Keyhandler keyIn ;
     private Rectangle box ;
     Point snakeHead;
@@ -50,20 +50,19 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameThread;
 
+
     public void setUseMouseControls(boolean useMouseControls) {
         this.useMouseControls = useMouseControls;
     }
     public void setUseKeyboardControls(boolean useKeyboardControls) {
         this.useKeyboardControls = useKeyboardControls;
     }
-    public void setFPS(int fps) {
-    this.FPS = fps;
-}
+    
 
 
-    public GamePanel(/*int panelWidth, int panelHeight*/) {
+    public GamePanel(int speedN) {
 
-       
+
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
@@ -78,8 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
         mouseIn = new Clickhandler();
         keyIn = new Keyhandler();
         modY=0;
-       // FPS = options.getSpeed();
-        
+        FPS = speedN;
+
         
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
 
