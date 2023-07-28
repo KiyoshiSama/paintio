@@ -1,7 +1,5 @@
 package paintio.paintio;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 public class ColoredRec{
     int x;
@@ -29,9 +27,9 @@ public class ColoredRec{
         this.color = color;
     }
 
-    public void draw(Graphics2D g2d, int tileSize) {
+   /* public void draw(Graphics2D g2d, int tileSize) {
         g2d.setColor(color);
         g2d.fillRect(x * tileSize, y * tileSize, tileSize, width * tileSize);
-    }
+    }*/
     
 }

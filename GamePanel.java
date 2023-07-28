@@ -1,14 +1,11 @@
 package paintio.paintio;
 
-import paintio.paintio.Clickhandler;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -46,9 +43,9 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int HEIGHT = 800;
     public static final int GAME_SPEED = 100;
     private int size ;
+    private int cameraOffsetX; 
+    private int cameraOffsetY; 
 
-    private Enemy enemy;
-    private ArrayList<Enemy> enemies;
     int FPS ; // FPS
     private Keyhandler keyIn ;
     private Rectangle box ;
@@ -81,7 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
         pathColors = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         previousPaths = new LinkedList<>();
-        enemies = new ArrayList<>();
+       // enemies = new ArrayList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         size = path.size();
         isOutsideBox = false;
@@ -89,15 +86,16 @@ public class GamePanel extends JPanel implements Runnable {
         keyIn = new Keyhandler();
         modY=0;
         FPS = speedN;
+        cameraOffsetX = 0;
+        cameraOffsetY = 0;
         gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
         
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-        //this.enemy = new Enemy(getRandomCoordinate(GRID_WIDTH), getRandomCoordinate(GRID_HEIGHT), 20, 20);
 
         //make the snake move to the right direction initially
         keyIn.right = true; 
         mouseIn.right = true;
-        
+
 
         this.addKeyListener(keyIn);
         this.addMouseListener(mouseIn);
@@ -117,49 +115,54 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-
-        // Draw the box
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
+public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g;
 
 
-        // Draw the path and store the colors in pathColors
+    // Draw the box
+    g2d.setColor(Color.WHITE);
+    g2d.fillRect(boxX * tileSize + cameraOffsetX, boxY * tileSize + cameraOffsetY, boxSize * tileSize, boxSize * tileSize);
 
-        for (int i = 0; i < path.size(); i++) {
-            Point segment = path.get(i);
-            Color color = Color.WHITE;
-            g2d.setColor(color);
-            g2d.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
-            pathColors.add(color); // Store the color in pathColors
-        }
-            
-            // Draw the colored rectangles from the coloredRectangles list
-        for (ColoredRec coloredRectangle : coloredRectangles) {
-            coloredRectangle.draw(g2d, tileSize);
-        }
-                // Draw the snake
-        for (Point segment : snake) {
-            g2d.setColor(Color.CYAN);
-            g2d.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
-        }
-       for (Enemy enemy : enemies) {
-    enemy.draw(g);
-}
-
-         if (useMouseControls) {
-            mouseIn.drawArrows(g2d);
-        }
-         if (gameOver) {
-            // Draw "Game Over" message
-            gameOverImg.paintIcon(null, g2d, getWidth() / 2 - 300, getHeight() / 2  - 300);
-            restartButton.setVisible(true); // Show the restart button
-        }
-
-        
+    // Draw the path and store the colors in pathColors
+    for (int i = 0; i < path.size(); i++) {
+        Point segment = path.get(i);
+        Color color = Color.WHITE;
+        g2d.setColor(color);
+        g2d.fillRect(segment.x * tileSize + cameraOffsetX, segment.y * tileSize + cameraOffsetY, tileSize, tileSize);
+        pathColors.add(color); // Store the color in pathColors
     }
+
+    // Draw the colored rectangles from the coloredRectangles list
+    for (ColoredRec coloredRectangle : coloredRectangles) {
+        int x = coloredRectangle.getX();
+        int y = coloredRectangle.getY();
+        int width = coloredRectangle.getWidth();
+        
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, tileSize, width * tileSize);
+    }
+
+    // Draw the snake
+    for (Point segment : snake) {
+        g2d.setColor(Color.CYAN);
+        int x = segment.x * tileSize + cameraOffsetX;
+        int y = segment.y * tileSize + cameraOffsetY;
+        g2d.fillRect(x, y, tileSize, tileSize);
+    }
+
+    // Draw "Game Over" message and restart button if the game is over
+    if (gameOver) {
+        gameOverImg.paintIcon(null, g2d, getWidth() / 2 - 300, getHeight() / 2 - 300);
+        restartButton.setVisible(true); // Show the restart button
+    }
+    
+
+    // Draw mouse controls if enabled
+    if (useMouseControls) {
+        mouseIn.drawArrows(g2d);
+    }
+}
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -183,11 +186,6 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (delta >= 1) {
                 update();
-                for (Enemy enemy : enemies) {
-                enemy.move();
-                // Other enemy behavior update code...
-                 }
-               // checkCollision();
                 repaint();
                 delta--;
                 drawCount++;
@@ -202,11 +200,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameOver) return; // Return if the game is over
+        if (gameOver ) return; // Return if the game is over
         // Move the snake in the current direction
         nextX = snake.getFirst().x;
         nextY = snake.getFirst().y;
         snakeHead = new Point(nextX , nextY);
+        
         if (!path.isEmpty())rectIntersect(snakeHead);    
         if (useKeyboardControls){
         if (keyIn.left) {
@@ -229,8 +228,11 @@ public class GamePanel extends JPanel implements Runnable {
                 nextX++;
             }
         }
-        Point nextPosition = new Point(nextX, nextY);
-        if (path.contains(nextPosition)) {
+
+         snakeHead = new Point(nextX, nextY);
+         cameraOffsetX = -nextX * tileSize + getWidth() / 2;
+        cameraOffsetY = -nextY * tileSize + getHeight() / 2;
+        if (path.contains(snakeHead)) {
             gameOver = true;
             restartButton.setVisible(true); // Show the restart button
             return;
@@ -258,65 +260,56 @@ public class GamePanel extends JPanel implements Runnable {
 
 private void fillBlock() {
     for (Point point : path) {
-    int x = point.x;
-    int y = point.y;
+        int x = point.x;
+        int y = point.y;
 
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x);
-    maxY = Math.max(maxY, y);
-}
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+    }
 
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-        
+
         modY = y + 1;
         Point currentPoint;
-        //if (currentPoint.equals(path.getLast()))break;
         Color color = Color.WHITE; // Set the default color for rectangles
-        for (int k = 0; k < maxX- minX; k++) {
+        for (int k = 0; k < maxX - minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
                 modY++;
             } else {
-                modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
                 break;
             }
         }
-        
     }
-    for (int i = path.size()-1; i >= 0; i--) {
+
+    for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-        
+
         modY = y - 1;
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
-        for (int k = 0; k < maxX- minX; k++) {
+        for (int k = 0; k < maxX - minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
                 modY--;
             } else {
-               // modY--;
-                ColoredRec coloredRectangle = new ColoredRec(x, y+1, modY - y, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, y + 1, y - modY, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
                 break;
             }
         }
-        
     }
-    
-    
+
     previousPaths.add(new LinkedList<>(path));
-    
-    
     path.clear();
 }
  
@@ -328,68 +321,59 @@ private void rectIntersect(Point head) {
         }
     }
 }
-private void fillnewBlock(){
-        previousPaths.add(new LinkedList<>(path));
+private void fillnewBlock() {
+    previousPaths.add(new LinkedList<>(path));
 
     for (Point point : path) {
-    int x = point.x;
-    int y = point.y;
+        int x = point.x;
+        int y = point.y;
 
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x);
-    maxY = Math.max(maxY, y);
-}
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+    }
 
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-        
+
         modY = y + 1;
         Color color = Color.WHITE; // Set the default color for rectangles
-        for (int k = 0; k < maxX- minX; k++) {
+        for (int k = 0; k < maxX - minX; k++) {
             Point currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!prevPaths(currentPoint) && !box.intersects(currentRect)) {
                 modY++;
             } else {
-                modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
                 break;
             }
         }
-        
     }
-    for (int i = path.size()-1; i >= 0; i--) {
+
+    for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-        
+
         modY = y - 1;
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
-        for (int k = 0; k < maxX- minX; k++) {
+        for (int k = 0; k < maxX - minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!prevRects(currentPoint)) {
                 modY--;
             } else {
-               /* if (currentRect.intersects(box) || prevPaths(currentPoint)) {
-                    break;
-                }*/
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, y, y - modY, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
                 break;
             }
         }
-        
     }
-        
+
     path.clear();
-
-
 }
 private boolean prevPaths(Point point) {
     for (LinkedList<Point> prevPath : previousPaths) {
@@ -423,8 +407,11 @@ private boolean prevRects(Point point) {
         keyIn.right = true;
         restartButton.setVisible(false); // Hide the restart button again
     }
-
-
+private boolean checkCollisionWithEnemy() {
+        return false;
+    // Check if the snake's head collides with the enemy
+   // return snakeHead.equals(new Point(enemy.getX(), enemy.getY()));
+}
 
 //write the if statement to avoid using first loop
 //stop adding useless path when snake hits the border of new painted rec when its inside
