@@ -8,8 +8,12 @@ import java.awt.Color;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import java.util.LinkedList;
 
@@ -23,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useMouseControls = false;
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
+        private ImageIcon gameOverImg;
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -36,9 +41,14 @@ public class GamePanel extends JPanel implements Runnable {
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
+    public static final int TILE_SIZE = 20;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 800;
+    public static final int GAME_SPEED = 100;
     private int size ;
 
-    
+    private Enemy enemy;
+    private ArrayList<Enemy> enemies;
     int FPS ; // FPS
     private Keyhandler keyIn ;
     private Rectangle box ;
@@ -57,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUseKeyboardControls(boolean useKeyboardControls) {
         this.useKeyboardControls = useKeyboardControls;
     }
-    
+
 
 
     public GamePanel(int speedN) {
@@ -71,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
         pathColors = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         previousPaths = new LinkedList<>();
+        enemies = new ArrayList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         size = path.size();
         isOutsideBox = false;
@@ -78,11 +89,12 @@ public class GamePanel extends JPanel implements Runnable {
         keyIn = new Keyhandler();
         modY=0;
         FPS = speedN;
-
+        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
         
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
+        //this.enemy = new Enemy(getRandomCoordinate(GRID_WIDTH), getRandomCoordinate(GRID_HEIGHT), 20, 20);
 
-        // Set keyH.right to true to make the snake move to the right direction initially
+        //make the snake move to the right direction initially
         keyIn.right = true; 
         mouseIn.right = true;
         
@@ -91,10 +103,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseIn);
         this.addKeyListener(keyIn);
         setFocusable(true);
-        restartButton = new JButton("Restart");
-        restartButton.setBounds(250, 250, 100, 50);
-        restartButton.setVisible(false); // Hide the button initially
-        restartButton.addActionListener(e -> restartGame()); // Add ActionListener to restart the game
+       restartButton = new JButton("Restart");
+        restartButton.setBounds(200 , 200, 100, 50);
+        restartButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                restartGame();
+            }
+        });
+        restartButton.setVisible(false);
         this.add(restartButton);
             
       
@@ -129,12 +145,20 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.setColor(Color.CYAN);
             g2d.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
         }
+       for (Enemy enemy : enemies) {
+    enemy.draw(g);
+}
+
          if (useMouseControls) {
             mouseIn.drawArrows(g2d);
         }
+         if (gameOver) {
+            // Draw "Game Over" message
+            gameOverImg.paintIcon(null, g2d, getWidth() / 2 - 300, getHeight() / 2  - 300);
+            restartButton.setVisible(true); // Show the restart button
+        }
 
-        // Reset the camera offset transformation
-        //g2d.translate(cameraOffsetX, cameraOffsetY);
+        
     }
 
     public void startGameThread() {
@@ -159,6 +183,11 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (delta >= 1) {
                 update();
+                for (Enemy enemy : enemies) {
+                enemy.move();
+                // Other enemy behavior update code...
+                 }
+               // checkCollision();
                 repaint();
                 delta--;
                 drawCount++;
@@ -173,6 +202,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        if (gameOver) return; // Return if the game is over
         // Move the snake in the current direction
         nextX = snake.getFirst().x;
         nextY = snake.getFirst().y;
@@ -207,11 +237,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
       
         // Check if the snake is outside the box
-  
-
          isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
-       //  if (prevPaths(new Point (snakeHead.x-1,snakeHead.y-1)))isOutsideNewPainted=true;
-
 
         if (isOutsideBox) {
             Point coordinate = new Point(nextX, nextY);
@@ -225,10 +251,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Move the snake's head
         snake.addFirst(new Point(nextX, nextY));
         snake.removeLast();
-        // Update the camera offset based on the snake's position
-        //Point snakeHead = snake.getFirst();
-      /*  cameraOffsetX = snakeHead.x * tileSize - panelWidth / 2;
-        cameraOffsetY = snakeHead.y * tileSize - panelHeight / 2;*/
+
     }
 
 
@@ -301,8 +324,6 @@ private void rectIntersect(Point head) {
     for (ColoredRec currentRec : coloredRectangles) {
         if (head.equals(new Point(currentRec.getX(), currentRec.getY()))) {
             fillnewBlock();
-           // isOutsideNewPainted=false;
-           
             break;
         }
     }
@@ -392,13 +413,7 @@ private boolean prevRects(Point point) {
 
     return false;
 }
-/*public int getCameraOffsetX() {
-        return cameraOffsetX;
-    }
 
-    public int getCameraOffsetY() {
-        return cameraOffsetY;
-    }*/
  public void restartGame() {
         gameOver = false;
         snake.clear();
@@ -413,5 +428,6 @@ private boolean prevRects(Point point) {
 
 //write the if statement to avoid using first loop
 //stop adding useless path when snake hits the border of new painted rec when its inside
+ //add color select for snake
 
 }

@@ -142,7 +142,7 @@ public class InputSelect extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         useMouseControls = false;
         useKeyboardControls = true;
-
+        setVisible(false);
                         // Now create and show the game frame with the chosen input mode
                         JFrame frame = new JFrame();
                         frame.setTitle("paint.io Game");
