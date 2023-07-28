@@ -1,4 +1,4 @@
-package paintio;
+package paintio.paintio;
 
 import paintio.paintio.Clickhandler;
 import javax.swing.JPanel;
@@ -20,36 +20,25 @@ public class GamePanel extends JPanel implements Runnable {
     private LinkedList<ColoredRec> coloredRectangles;
     private LinkedList<Color> pathColors; 
     private LinkedList<LinkedList<Point>> previousPaths;
-
     private boolean useMouseControls = false;
     private boolean useKeyboardControls = false;
-
-    
     private Clickhandler mouseIn;
-
-    
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
-    
-    
     private boolean gameOver; // Flag to indicate if the game is over
     private JButton restartButton;
-    
-
     boolean isOutsideBox;
     int nextX;
     int nextY;
-    private int modY;
+    int modY;
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
-
     private int size ;
-   /* private int cameraOffsetX;
-    private int cameraOffsetY;*/
 
+    GameMenu options = new GameMenu();
     int FPS = 5; // FPS
     private Keyhandler keyIn ;
     private Rectangle box ;
@@ -58,96 +47,22 @@ public class GamePanel extends JPanel implements Runnable {
     final int boxSize = 9; 
     final int boxX = 6; // X-coordinate of the box's top-left corner
     final int boxY = 6; // Y-coordinate of the box's top-left corner
-   /* private int panelWidth;
-    private int panelHeight;*/
 
     Thread gameThread;
 
-  //  private int panelWidth;
-   // private int panelHeight;
     public void setUseMouseControls(boolean useMouseControls) {
         this.useMouseControls = useMouseControls;
     }
     public void setUseKeyboardControls(boolean useKeyboardControls) {
         this.useKeyboardControls = useKeyboardControls;
     }
+    public void setFPS(int fps) {
+    this.FPS = fps;
+}
+
 
     public GamePanel(/*int panelWidth, int panelHeight*/) {
-      /* this.panelWidth = panelWidth;
-        this.panelHeight = panelHeight;*/
-       // Initialize the mouse arrow images
-        /*arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\U.png");
-        arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\D.png");
-        arrowLeftImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\L.png");
-        arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\R.png");
 
-        // Initialize the mouse arrow rectangle bounds
-        arrowUpRect = new Rectangle(1600, 500, arrowUpImage.getIconWidth(), arrowUpImage.getIconHeight());
-        arrowDownRect = new Rectangle(1600, 700, arrowDownImage.getIconWidth(), arrowDownImage.getIconHeight());
-        arrowLeftRect = new Rectangle(1450, 630, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());
-        arrowRightRect = new Rectangle(1680, 630, arrowRightImage.getIconWidth(), arrowRightImage.getIconHeight());*/
-
-        // Initialize the buttons
-        /*keyboardButton = new JButton("Keyboard");
-        mouseButton = new JButton("Mouse");
-*/
-        // Set button bounds and action listeners
-       /* keyboardButton.setBounds(10, 10, 100, 30);
-        mouseButton.setBounds(120, 10, 100, 30);
-        keyboardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                useKeyboardControls = true;
-                useMouseControls = false;
-            }
-        });
-        mouseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                useKeyboardControls = false;
-                useMouseControls = true;
-            }
-        });
-
-        // Add the buttons to the panel
-        this.add(keyboardButton);
-        this.add(mouseButton);
-
-        // Add mouse listener to handle mouse clicks
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (useMouseControls) {
-                    Point mousePoint = e.getPoint();
-                    if (arrowUpRect.contains(mousePoint)) {
-                        keyH.up = true;
-                        keyH.down = false;
-                        keyH.left = false;
-                        keyH.right = false;
-                    } else if (arrowDownRect.contains(mousePoint)) {
-                        keyH.up = false;
-                        keyH.down = true;
-                        keyH.left = false;
-                        keyH.right = false;
-                    } else if (arrowLeftRect.contains(mousePoint)) {
-                        keyH.up = false;
-                        keyH.down = false;
-                        keyH.left = true;
-                        keyH.right = false;
-                    } else if (arrowRightRect.contains(mousePoint)) {
-                        keyH.up = false;
-                        keyH.down = false;
-                        keyH.left = false;
-                        keyH.right = true;
-                    } else {
-                        keyH.up = false;
-                        keyH.down = false;
-                        keyH.left = false;
-                        keyH.right = false;
-                    }
-                }
-            }
-        });*/
        
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -162,16 +77,16 @@ public class GamePanel extends JPanel implements Runnable {
         isOutsideBox = false;
         mouseIn = new Clickhandler();
         keyIn = new Keyhandler();
-      /*  cameraOffsetX = 0;
-        cameraOffsetY = 0;*/
-        
         modY=0;
+       // FPS = options.getSpeed();
         
         
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
 
         // Set keyH.right to true to make the snake move to the right direction initially
         keyIn.right = true; 
+        mouseIn.right = true;
+        
 
         this.addKeyListener(keyIn);
         this.addMouseListener(mouseIn);
@@ -180,27 +95,17 @@ public class GamePanel extends JPanel implements Runnable {
         restartButton = new JButton("Restart");
         restartButton.setBounds(250, 250, 100, 50);
         restartButton.setVisible(false); // Hide the button initially
-      //  restartButton.addActionListener(e -> restartGame()); // Add ActionListener to restart the game
+        restartButton.addActionListener(e -> restartGame()); // Add ActionListener to restart the game
         this.add(restartButton);
             
       
     }
-   /* public Dimension getPreferredSize() {
-        return new Dimension(panelWidth, panelHeight);
-    }
-public int getPanelWidth() {
-        return panelWidth;
-    }
 
-    public int getPanelHeight() {
-        return panelHeight;
-    }*/
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        // Apply camera offset to the Graphics2D object
-       // g2d.translate(-cameraOffsetX, -cameraOffsetY);
+
         // Draw the box
         g2d.setColor(Color.WHITE);
         g2d.fillRect(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
@@ -274,8 +179,8 @@ public int getPanelWidth() {
         nextY = snake.getFirst().y;
         snakeHead = new Point(nextX , nextY);
         if (!path.isEmpty())rectIntersect(snakeHead);    
-
-        if (useKeyboardControls) {
+        if (useKeyboardControls){
+        if (keyIn.left) {
             nextX--;
         } else if (keyIn.right) {
             nextX++;
@@ -283,24 +188,24 @@ public int getPanelWidth() {
             nextY--;
         } else if (keyIn.down) {
             nextY++;
-        }
+        }}
          if (useMouseControls) {
-            if (mouseIn.isUp()) {
-                // Move up
-            } else if (mouseIn.isDown()) {
-                // Move down
-            } else if (mouseIn.isLeft()) {
-                // Move left
-            } else if (mouseIn.isRight()) {
-                // Move right
+            if (mouseIn.up) {
+                nextY--;
+            } else if (mouseIn.down) {
+                 nextY++;
+            } else if (mouseIn.left) {
+                nextX--;
+            } else if (mouseIn.right) {
+                nextX++;
             }
         }
-      /*  Point nextPosition = new Point(nextX, nextY);
+        Point nextPosition = new Point(nextX, nextY);
         if (path.contains(nextPosition)) {
             gameOver = true;
             restartButton.setVisible(true); // Show the restart button
             return;
-        }*/
+        }
       
         // Check if the snake is outside the box
   
@@ -322,7 +227,7 @@ public int getPanelWidth() {
         snake.addFirst(new Point(nextX, nextY));
         snake.removeLast();
         // Update the camera offset based on the snake's position
-        Point snakeHead = snake.getFirst();
+        //Point snakeHead = snake.getFirst();
       /*  cameraOffsetX = snakeHead.x * tileSize - panelWidth / 2;
         cameraOffsetY = snakeHead.y * tileSize - panelHeight / 2;*/
     }
@@ -495,17 +400,17 @@ private boolean prevRects(Point point) {
     public int getCameraOffsetY() {
         return cameraOffsetY;
     }*/
- /*public void restartGame() {
+ public void restartGame() {
         gameOver = false;
         snake.clear();
         path.clear();
         coloredRectangles.clear();
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-        keyH.right = true;
+        keyIn.right = true;
         restartButton.setVisible(false); // Hide the restart button again
     }
 
-*/
+
 
 //write the if statement to avoid using first loop
 //stop adding useless path when snake hits the border of new painted rec when its inside

@@ -1,10 +1,12 @@
-package paintio;
+package paintio.paintio;
+
+import javax.swing.JFrame;
 
 
 public class InputSelect extends javax.swing.JFrame {
-    private boolean useMouseControls = false;
-    private boolean useKeyboardControls = false;
-    private boolean inputSelected = false;
+    public boolean useMouseControls = false;
+    public boolean useKeyboardControls = false;
+    public boolean inputSelected = false;
    
     
     public InputSelect() {
@@ -105,16 +107,54 @@ public class InputSelect extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         useMouseControls = true;
         useKeyboardControls = false;
-        inputSelected = true;
        setVisible(false);
+
+                        // Now create and show the game frame with the chosen input mode
+                        JFrame frame = new JFrame();
+                        frame.setTitle("paint.io Game");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setResizable(true);
+
+                        // Create a GamePanel with the desired dimensions
+                        GamePanel gamePanel = new GamePanel();
+
+                        // Set the chosen input mode in the GamePanel
+                        gamePanel.setUseMouseControls(useMouseControls);
+                        gamePanel.setUseKeyboardControls(useKeyboardControls);
+
+                        frame.add(gamePanel);
+
+                        frame.pack();
+                        frame.setVisible(true);
+
+                        gamePanel.startGameThread();
+      
 
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         useMouseControls = false;
         useKeyboardControls = true;
-        inputSelected = true;
-        setVisible(false);
+
+                        // Now create and show the game frame with the chosen input mode
+                        JFrame frame = new JFrame();
+                        frame.setTitle("paint.io Game");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setResizable(true);
+
+                        // Create a GamePanel with the desired dimensions
+                        GamePanel gamePanel = new GamePanel();
+
+                        // Set the chosen input mode in the GamePanel
+                        gamePanel.setUseMouseControls(useMouseControls);
+                        gamePanel.setUseKeyboardControls(useKeyboardControls);
+
+                        frame.add(gamePanel);
+
+                        frame.pack();
+                        frame.setVisible(true);
+
+                        gamePanel.startGameThread();
     }//GEN-LAST:event_jButton1MouseClicked
 
     public boolean isInputSelected() {

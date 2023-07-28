@@ -1,5 +1,5 @@
 
-package paintio;
+package paintio.paintio;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

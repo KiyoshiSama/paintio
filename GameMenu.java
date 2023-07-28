@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package paintio;
 
-/**
- *
- * @author SkySystem
- */
+package paintio.paintio;
+
+
 public class GameMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GameMenu
-     */
+    public int speedN;
     public GameMenu() {
         initComponents();
     }
@@ -32,7 +23,6 @@ public class GameMenu extends javax.swing.JFrame {
         StartBut = new javax.swing.JButton();
         GameSpeed = new javax.swing.JComboBox<>();
         GameDiff = new javax.swing.JComboBox<>();
-        EnemiesCount = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,12 +44,22 @@ public class GameMenu extends javax.swing.JFrame {
         StartBut.setText("Start the Game");
         StartBut.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(), null));
         StartBut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        StartBut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StartButMouseClicked(evt);
+            }
+        });
 
         GameSpeed.setBackground(new java.awt.Color(255, 153, 102));
         GameSpeed.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        GameSpeed.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Low", "Average", "High" }));
+        GameSpeed.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOW", "MEDIUM", "HIGH" }));
         GameSpeed.setToolTipText("");
         GameSpeed.setBorder(null);
+        GameSpeed.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                GameSpeedItemStateChanged(evt);
+            }
+        });
         GameSpeed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GameSpeedActionPerformed(evt);
@@ -68,7 +68,7 @@ public class GameMenu extends javax.swing.JFrame {
 
         GameDiff.setBackground(new java.awt.Color(255, 153, 102));
         GameDiff.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Easy", "Medium", "Hard" }));
+        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Easy", "NORMAL", "Hard" }));
         GameDiff.setToolTipText("");
         GameDiff.setBorder(null);
         GameDiff.addActionListener(new java.awt.event.ActionListener() {
@@ -77,32 +77,18 @@ public class GameMenu extends javax.swing.JFrame {
             }
         });
 
-        EnemiesCount.setBackground(new java.awt.Color(153, 153, 153));
-        EnemiesCount.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        EnemiesCount.setForeground(new java.awt.Color(153, 0, 51));
-        EnemiesCount.setMaximum(5);
-        EnemiesCount.setToolTipText("");
-        EnemiesCount.setValue(1);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(GameSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGap(197, 197, 197)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                                .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(246, 246, 246)
-                        .addComponent(EnemiesCount, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(197, 197, 197)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(GameSpeed, 0, 435, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                        .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(229, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,9 +101,7 @@ public class GameMenu extends javax.swing.JFrame {
                 .addComponent(GameDiff, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(GameSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(EnemiesCount, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,16 +123,44 @@ public class GameMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void GameSpeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameSpeedActionPerformed
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_GameSpeedActionPerformed
 
     private void GameDiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameDiffActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_GameDiffActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
+       setVisible(false);
+       InputSelect inputFrame = new InputSelect();
+       inputFrame.setVisible(true);
+    }//GEN-LAST:event_StartButMouseClicked
+
+    private void GameSpeedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GameSpeedItemStateChanged
+      String speedS = GameSpeed.getSelectedItem().toString();
+    if (null != speedS) switch (speedS) {
+        case "LOW":
+            speedN = 5;
+            break;
+        case "MEDIUM":
+            speedN = 10;
+            break;
+        case "HIGH":
+            speedN = 16;
+            break;
+        default:
+            break;
+    }
+
+    // Update the FPS value in the GamePanel instance
+    GamePanel gamePanel = new GamePanel();
+    gamePanel.setFPS(speedN);
+        
+    }//GEN-LAST:event_GameSpeedItemStateChanged
+
+    public int getSpeed(){
+    return speedN;
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -182,7 +194,6 @@ public class GameMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSlider EnemiesCount;
     private javax.swing.JComboBox<String> GameDiff;
     private javax.swing.JComboBox<String> GameSpeed;
     private javax.swing.JButton StartBut;

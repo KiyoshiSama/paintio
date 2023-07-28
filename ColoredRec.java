@@ -1,4 +1,4 @@
-package paintio;
+package paintio.paintio;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
