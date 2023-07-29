@@ -41,8 +41,8 @@ public class Enemy {
         pathColors = new LinkedList<>();
         previousPaths = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
-        boxX = (int) (Math.random() * 50); 
-        boxY = (int) (Math.random() * 50); 
+        boxX = (int) (Math.random() * 20); 
+        boxY = (int) (Math.random() * 20); 
         boxSize = 6;
         randomColor();
         enemyColors = randomColor();
@@ -84,7 +84,7 @@ public class Enemy {
     }
     }
 
-        public void move() {
+        public void enemyUpdate() {
             nextX = Esnake.getFirst().x;
             nextY = Esnake.getFirst().y;
             isValidMove = false;

@@ -24,9 +24,9 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useMouseControls = false;
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
-        private ImageIcon gameOverImg;
-            private Enemy enemy;
-
+    private ImageIcon gameOverImg;
+    private Enemy enemy;
+    private ArrayList<Enemy> enemies;
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -39,10 +39,10 @@ public class GamePanel extends JPanel implements Runnable {
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
-    public static final int TILE_SIZE = 20;
+   // public static final int TILE_SIZE = 20;
    // public static final int WIDTH = 800;
     //public static final int HEIGHT = 800;
-    public static final int GAME_SPEED = 100;
+    //public static final int GAME_SPEED = 100;
     private int size ;
     private int cameraOffsetX; 
     private int cameraOffsetY; 
@@ -77,7 +77,12 @@ public class GamePanel extends JPanel implements Runnable {
         path = new LinkedList<>();
         pathColors = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
+        enemy = new Enemy();
         previousPaths = new LinkedList<>();
+        enemies = new ArrayList<>(3);
+        for (int i = 0; i < 3; i++) {
+        enemies.add(new Enemy());
+    }
        // enemies = new ArrayList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         size = path.size();
@@ -88,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
         cameraOffsetX = 0;
         cameraOffsetY = 0;
         gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
-        enemy = new Enemy();
+        
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
 
         //make the snake move to the right direction initially
@@ -119,7 +124,9 @@ public void paintComponent(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
 
 
-    enemy.enemyDraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
+    for (Enemy enemyNum : enemies) {
+        enemyNum.enemyDraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
+    }
     // Draw the box
     g2d.setColor(Color.WHITE);
     g2d.fillRect(boxX * tileSize + cameraOffsetX, boxY * tileSize + cameraOffsetY, boxSize * tileSize, boxSize * tileSize);
@@ -263,7 +270,9 @@ public void paintComponent(Graphics g) {
         snake.addFirst(new Point(nextX, nextY));
         snake.removeLast();
         
-        enemy.move();
+        for (Enemy enemyNum : enemies) {
+        enemyNum.enemyUpdate();
+    }
 
     }
 
@@ -444,6 +453,11 @@ private boolean prevRects(Point point) {
         restartButton.setVisible(false); // Hide the restart button again
         enemy.restartEnemy();
     }
+ public void spawnNewEnemies(int numberOfNewEnemies) {
+    for (int i = 0; i < numberOfNewEnemies; i++) {
+        enemies.add(new Enemy(/*Optional parameters for position and speed*/));
+    }
+}
 private boolean checkCollisionWithEnemy() {
         return false;
     // Check if the snake's head collides with the enemy
@@ -457,4 +471,5 @@ private boolean checkCollisionWithEnemy() {
 //add boxintersect in upward checking fillnew
 // enemies eliminate each other
 //choose player color in menu
+//snake and enemies paint over each other
 }
