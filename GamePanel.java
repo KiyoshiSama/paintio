@@ -47,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     private int cameraOffsetX; 
     private int cameraOffsetY; 
 
-    int FPS ; // FPS
+    int FPS  ; // FPS
     private Keyhandler keyIn ;
     private Rectangle box ;
     Point snakeHead;
@@ -257,7 +257,7 @@ public void paintComponent(Graphics g) {
         // Check if the snake is outside the box
          isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
 
-        if (isOutsideBox ) {
+        if (isOutsideBox && !prevRects(snakeHead)) {
             Point coordinate = new Point(nextX, nextY);
              path.addFirst(coordinate);
       } else {
@@ -295,12 +295,16 @@ private void fillBlock() {
         
         int modY = y + 1;
         Point currentPoint;
-        if (!path.contains(new Point(x,modY))){
         Color color = Color.WHITE; // Set the default color for rectangles
-        for (int k = 1; k < maxX- minX; k++) {
+        if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        }
+        else{
+        for (int k = 0; k < maxY- minY; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) /*&& !prevRects(currentPoint)*/) {
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) ) {
                 modY++;
             } else {
                 modY++;
@@ -310,21 +314,26 @@ private void fillBlock() {
                 break;
             }
         }
-        }
+    }
         
     }
-    for (int i = path.size()-1; i >= 0; i--) {
+    
+    for (int i = 0; i <= path.size()-1; i++) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-        
+        if (!prevRects(path.get(i))){
         int modY = y - 1;
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
-      //  if (!path.contains(new Point(x,modY))){
+      if (path.contains(new Point(x,modY))){
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        }
+      else{
         for (int k = 0; k < maxX- minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint)) {
                 modY--;
             } else {
                // modY--;
@@ -333,9 +342,10 @@ private void fillBlock() {
                
                 break;
             }
-   //     }
+
     }
-        
+        }
+    }  
     }
     
     
@@ -435,7 +445,7 @@ private boolean prevRects(Point point) {
         int width = coloredRectangle.getWidth();
 
         // Check if the point lies inside the boundaries of the colored rectangle
-        if (point.x >= x && point.x < x + 9 && point.y >= y && point.y < y + width) {
+        if (point.x >= x && point.x < x + 1 && point.y >= y && point.y < y + width) {
             return true;
         }
     }
@@ -472,4 +482,6 @@ private boolean checkCollisionWithEnemy() {
 // enemies eliminate each other
 //choose player color in menu
 //snake and enemies paint over each other
+//avoid enemies to spawn on each other
+//if the new direction in the enemy clas != with previous, do it again
 }

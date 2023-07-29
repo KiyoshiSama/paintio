@@ -139,11 +139,26 @@ public class GameMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_GameSpeedActionPerformed
 
     private void GameDiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameDiffActionPerformed
-
+      /*   String diffS = GameDiff.getSelectedItem().toString();
+        switch (diffS) {
+            case "LOW":
+                speedN = 5;
+                break;
+            case "MEDIUM":
+                speedN = 10;
+                break;
+            case "HIGH":
+                speedN = 16;
+                break;
+            default:
+                break;
+        }     */ 
     }//GEN-LAST:event_GameDiffActionPerformed
 
     private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
-       setVisible(false);
+        String speedS = GameSpeed.getSelectedItem().toString();
+        if ("LOW".equals(speedS))speedN = 5;
+        setVisible(false);
        InputSelect inputFrame = new InputSelect(this);
        inputFrame.setVisible(true);
     }//GEN-LAST:event_StartButMouseClicked
