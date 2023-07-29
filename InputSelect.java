@@ -119,7 +119,7 @@ public class InputSelect extends javax.swing.JFrame {
                         // Now create and show the game frame with the chosen input mode
                         JFrame frame = new JFrame();
                         frame.setTitle("paint.io Game");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
                         frame.setResizable(true);
 
                         int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
@@ -146,7 +146,7 @@ public class InputSelect extends javax.swing.JFrame {
                         // Now create and show the game frame with the chosen input mode
                         JFrame frame = new JFrame();
                         frame.setTitle("paint.io Game");
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
                         frame.setResizable(true);
 
                         int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu

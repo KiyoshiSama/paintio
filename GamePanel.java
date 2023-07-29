@@ -25,6 +25,8 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
         private ImageIcon gameOverImg;
+            private Enemy enemy;
+
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -33,14 +35,13 @@ public class GamePanel extends JPanel implements Runnable {
     boolean isOutsideBox;
     int nextX;
     int nextY;
-    int modY;
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
     public static final int TILE_SIZE = 20;
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+   // public static final int WIDTH = 800;
+    //public static final int HEIGHT = 800;
     public static final int GAME_SPEED = 100;
     private int size ;
     private int cameraOffsetX; 
@@ -66,7 +67,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
-
     public GamePanel(int speedN) {
 
 
@@ -84,12 +84,11 @@ public class GamePanel extends JPanel implements Runnable {
         isOutsideBox = false;
         mouseIn = new Clickhandler();
         keyIn = new Keyhandler();
-        modY=0;
         FPS = speedN;
         cameraOffsetX = 0;
         cameraOffsetY = 0;
         gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
-        
+        enemy = new Enemy();
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
 
         //make the snake move to the right direction initially
@@ -120,6 +119,7 @@ public void paintComponent(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
 
 
+    enemy.enemyDraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
     // Draw the box
     g2d.setColor(Color.WHITE);
     g2d.fillRect(boxX * tileSize + cameraOffsetX, boxY * tileSize + cameraOffsetY, boxSize * tileSize, boxSize * tileSize);
@@ -196,6 +196,7 @@ public void paintComponent(Graphics g) {
                 drawCount = 0;
                 timer = 0;
             }
+            
         }
     }
 
@@ -204,9 +205,9 @@ public void paintComponent(Graphics g) {
         // Move the snake in the current direction
         nextX = snake.getFirst().x;
         nextY = snake.getFirst().y;
-        snakeHead = new Point(nextX , nextY);
+       // snakeHead = new Point(nextX , nextY);
         
-        if (!path.isEmpty())rectIntersect(snakeHead);    
+        
         if (useKeyboardControls){
         if (keyIn.left) {
             nextX--;
@@ -228,20 +229,28 @@ public void paintComponent(Graphics g) {
                 nextX++;
             }
         }
+       
 
          snakeHead = new Point(nextX, nextY);
+         if (!path.isEmpty())rectIntersect(snakeHead);    
          cameraOffsetX = -nextX * tileSize + getWidth() / 2;
-        cameraOffsetY = -nextY * tileSize + getHeight() / 2;
+         cameraOffsetY = -nextY * tileSize + getHeight() / 2;
         if (path.contains(snakeHead)) {
             gameOver = true;
             restartButton.setVisible(true); // Show the restart button
             return;
         }
+        // Check for collisions with the enemy (you need to implement this method)
+       /* if (checkCollisionWithEnemy()) {
+            gameOver = true;
+            restartButton.setVisible(true); // Show the restart button
+        return;
+    }*/
       
         // Check if the snake is outside the box
          isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
 
-        if (isOutsideBox) {
+        if (isOutsideBox ) {
             Point coordinate = new Point(nextX, nextY);
              path.addFirst(coordinate);
       } else {
@@ -253,6 +262,8 @@ public void paintComponent(Graphics g) {
         // Move the snake's head
         snake.addFirst(new Point(nextX, nextY));
         snake.removeLast();
+        
+        enemy.move();
 
     }
 
@@ -260,56 +271,68 @@ public void paintComponent(Graphics g) {
 
 private void fillBlock() {
     for (Point point : path) {
-        int x = point.x;
-        int y = point.y;
+    int x = point.x;
+    int y = point.y;
 
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
-    }
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+}
 
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-
-        modY = y + 1;
+        
+        int modY = y + 1;
         Point currentPoint;
+        if (!path.contains(new Point(x,modY))){
         Color color = Color.WHITE; // Set the default color for rectangles
-        for (int k = 0; k < maxX - minX; k++) {
+        for (int k = 1; k < maxX- minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) /*&& !prevRects(currentPoint)*/) {
                 modY++;
             } else {
+                modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+               
                 break;
             }
         }
+        }
+        
     }
-
-    for (int i = path.size() - 1; i >= 0; i--) {
+    for (int i = path.size()-1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-
-        modY = y - 1;
+        
+        int modY = y - 1;
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
-        for (int k = 0; k < maxX - minX; k++) {
+      //  if (!path.contains(new Point(x,modY))){
+        for (int k = 0; k < maxX- minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
                 modY--;
             } else {
-                ColoredRec coloredRectangle = new ColoredRec(x, y + 1, y - modY, color);
+               // modY--;
+                ColoredRec coloredRectangle = new ColoredRec(x, y+1, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+               
                 break;
             }
-        }
+   //     }
     }
-
+        
+    }
+    
+    
     previousPaths.add(new LinkedList<>(path));
+    
+    
     path.clear();
 }
  
@@ -321,59 +344,72 @@ private void rectIntersect(Point head) {
         }
     }
 }
-private void fillnewBlock() {
+private void fillnewBlock(){
     previousPaths.add(new LinkedList<>(path));
 
     for (Point point : path) {
-        int x = point.x;
-        int y = point.y;
+    int x = point.x;
+    int y = point.y;
 
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
-    }
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+}
 
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-
-        modY = y + 1;
+        
+        int modY = y + 1;
         Color color = Color.WHITE; // Set the default color for rectangles
-        for (int k = 0; k < maxX - minX; k++) {
+         if (!path.contains(new Point(x,modY))){
+        for (int k = 1; k < maxX- minX; k++) {
             Point currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!prevPaths(currentPoint) && !box.intersects(currentRect)) {
                 modY++;
             } else {
+                modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+               
                 break;
             }
         }
+         }
+        
     }
-
-    for (int i = path.size() - 1; i >= 0; i--) {
+    for (int i = path.size()-1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
-
-        modY = y - 1;
+        
+        int modY = y - 1;
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
-        for (int k = 0; k < maxX - minX; k++) {
+         //if (!path.contains(new Point(x,modY))){
+        for (int k = 1; k < maxX- minX; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
             if (!prevRects(currentPoint)) {
                 modY--;
             } else {
-                ColoredRec coloredRectangle = new ColoredRec(x, y, y - modY, color);
+               /* if (currentRect.intersects(box) || prevPaths(currentPoint)) {
+                    break;
+                }*/
+                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+               
                 break;
             }
         }
+         //}
+        
     }
-
+        
     path.clear();
+
+
 }
 private boolean prevPaths(Point point) {
     for (LinkedList<Point> prevPath : previousPaths) {
@@ -406,6 +442,7 @@ private boolean prevRects(Point point) {
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         keyIn.right = true;
         restartButton.setVisible(false); // Hide the restart button again
+        enemy.restartEnemy();
     }
 private boolean checkCollisionWithEnemy() {
         return false;
@@ -416,5 +453,8 @@ private boolean checkCollisionWithEnemy() {
 //write the if statement to avoid using first loop
 //stop adding useless path when snake hits the border of new painted rec when its inside
  //add color select for snake
-
+//add prev rects in downward checking fillnew
+//add boxintersect in upward checking fillnew
+// enemies eliminate each other
+//choose player color in menu
 }
