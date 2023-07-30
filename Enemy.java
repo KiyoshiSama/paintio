@@ -34,15 +34,20 @@ public class Enemy {
     private Color enemyColor;
     private Color enemyHcolor;
 
-    public Enemy(/*int x, int y, speedN*/) {
+    public Enemy(/*int boxX , int boxY*/) {
+        //this.boxX = boxX;
+        //this.boxY = boxY;
         Esnake = new LinkedList<>();
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         pathColors = new LinkedList<>();
         previousPaths = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
-        boxX = (int) (Math.random() * 20); 
-        boxY = (int) (Math.random() * 20); 
+        while(true){
+        boxX = (int) (Math.random() * 30); 
+        boxY = (int) (Math.random() * 30); 
+        if (!(boxX > 7 && boxX < 16 && boxY >7 && boxY <16))break;
+        }
         boxSize = 6;
         randomColor();
         enemyColors = randomColor();
@@ -50,8 +55,6 @@ public class Enemy {
         enemyHcolor = enemyColors[1];
         Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
     }
-
-    // Add getter and setter methods for x and y coordinates
 
     public void enemyDraw(Graphics2D g2d, int tileSize, int cameraOffsetX, int cameraOffsetY) {
         
@@ -91,29 +94,34 @@ public class Enemy {
             double randomValue = Math.random() ;
             // Adjust the probability of different movement directions by changing the weights
             double[] movementWeights = {0.25, 0.25, 0.25, 0.25}; // Up, Down, Left, Right
-                
+            
             while (!isValidMove){
                 if (randomValue < movementWeights[0]) { // Up
                     nextY--;
+                    
                  } else if (randomValue < movementWeights[0] + movementWeights[1]) { // Down
                     nextY++;
+                    
                 } else if (randomValue < movementWeights[0] + movementWeights[1] + movementWeights[2]) { // Left
                     nextX--;
+                   
                 } else { // Right
                     nextX++;
+                    
                 }
             
                 EsnakeHead = new Point(nextX,nextY);
-                 // Check if the new position intersects with the enemy's own path or the colored rectangles
+                 // Check if the new position intersects with the enemy's own path
                 if (!path.contains(EsnakeHead)) {
                     isValidMove = true;
                     }
+                
                 }
                 isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
                 
-                        if (isOutsideBox ) {
-            Point coordinate = new Point(nextX, nextY);
-             path.addFirst(coordinate);
+            if (isOutsideBox ) {
+                Point coordinate = new Point(nextX, nextY);
+                path.addFirst(coordinate);
                 } else {
                 if (!path.isEmpty()) {
                     fillBlock();
