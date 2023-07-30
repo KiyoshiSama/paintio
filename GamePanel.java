@@ -11,9 +11,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import java.util.LinkedList;
-
 
 public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Point> snake;
@@ -25,14 +23,18 @@ public class GamePanel extends JPanel implements Runnable {
     private ImageIcon gameOverImg;
     private Enemy enemy;
     private ArrayList<Enemy> enemies;
-    final int originalTileSize = 16;
-    final int scale = 3;
-    final int tileSize = originalTileSize * scale;
+    
+    private int originalTileSize = 16;
+    private int scale = 3;
+    private int tileSize = originalTileSize * scale;
     private boolean gameOver; // Flag to indicate if the game is over
-    private JButton restartButton;
-    boolean isOutsideBox;
-    int nextX;
-    int nextY;
+    //private JButton restartButton;
+    private boolean isOutsideBox;
+    private int nextX;
+    private int nextY;
+    private int EboxX;
+    private int EboxY;
+    
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
@@ -41,14 +43,13 @@ public class GamePanel extends JPanel implements Runnable {
    // public static final int WIDTH = 800;
     //public static final int HEIGHT = 800;
     //public static final int GAME_SPEED = 100;
-    private int size ;
     private int cameraOffsetX; 
     private int cameraOffsetY; 
 
-    int FPS  ; // FPS
+    int FPS  ; 
     private Keyhandler keyIn ;
     private Rectangle box ;
-    Point snakeHead;
+    private Point snakeHead;
 
     final int boxSize = 9; 
     final int boxX = 6; // X-coordinate of the box's top-left corner
@@ -69,6 +70,10 @@ public class GamePanel extends JPanel implements Runnable {
     public int getSnakeY(){
     return boxY;
     }
+    public ArrayList<Enemy> getEnemiesArray(){
+    return enemies;
+    
+    }
 
 
     public GamePanel(int speedN, int enemyCount) {
@@ -80,14 +85,14 @@ public class GamePanel extends JPanel implements Runnable {
         snake = new LinkedList<>();
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
-        enemy = new Enemy();
+        
         enemies = new ArrayList<>(enemyCount);
         for (int i = 0; i < enemyCount; i++) {
-        enemies.add(new Enemy());
+        generateEnemy();
+        enemies.add(new Enemy(EboxX, EboxY));
+        
     }
-       // enemies = new ArrayList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
-        size = path.size();
         isOutsideBox = false;
         mouseIn = new Clickhandler();
         keyIn = new Keyhandler();
@@ -107,16 +112,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseIn);
         this.addKeyListener(keyIn);
         setFocusable(true);
-       restartButton = new JButton("Restart");
-        restartButton.setBounds(200 , 200, 100, 50);
-        restartButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                restartGame();
-            }
-        });
-        restartButton.setVisible(false);
-        this.add(restartButton);
-            
+
       
     }
 
@@ -159,10 +155,10 @@ public void paintComponent(Graphics g) {
         g2d.fillRect(x, y, tileSize, tileSize);
     }
 
-    // Draw "Game Over" message and restart button if the game is over
+    // Draw "Game Over" message 
     if (gameOver) {
         gameOverImg.paintIcon(null, g2d, getWidth() / 2 - 300, getHeight() / 2 - 300);
-        restartButton.setVisible(true); // Show the restart button
+      //  restartButton.setVisible(true); // Show the restart button
     }
     
 
@@ -242,15 +238,8 @@ public void paintComponent(Graphics g) {
          cameraOffsetY = -nextY * tileSize + getHeight() / 2;
         if (path.contains(snakeHead)) {
             gameOver = true;
-            restartButton.setVisible(true); // Show the restart button
             return;
         }
-        // Check for collisions with the enemy (you need to implement this method)
-       /* if (checkCollisionWithEnemy()) {
-            gameOver = true;
-            restartButton.setVisible(true); // Show the restart button
-        return;
-    }*/
       
         // Check if the snake is outside the box
          isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
@@ -271,7 +260,23 @@ public void paintComponent(Graphics g) {
         for (Enemy enemyNum : enemies) {
         enemyNum.enemyUpdate();
     }
+         for (int i =0 ; i < enemies.size() ; i++) {
+             Enemy enemyIndex = enemies.get(i);
+             if (enemyIndex.getEnemyPath().contains(snakeHead)){
+                enemies.remove(i);
+                enemyIndex.removeEnemy(); // Clear enemy's path and reset its position
+                i--; // Decrement i as the enemies list size is reduced
 
+        }
+    }
+       for (int i =0 ; i < enemies.size() ; i++) {
+             Enemy enemyIndex = enemies.get(i);
+             if (path.contains(enemyIndex.getEnemyHead())){
+            gameOver = true;
+            return;
+        }
+    }  
+       checkEnemyCollisions();
     }
 
 
@@ -361,27 +366,57 @@ private boolean prevRects(Point point) {
 
     return false;
 }
+ public void generateEnemy(){
+        while(true){
+        EboxX = (int) (Math.random() * 20); 
+        EboxY = (int) (Math.random() * 20); 
+        if (!isPositionOccupied(EboxX,EboxY)){
+            break;
+        }
+        }
 
- public void restartGame() {
-        gameOver = false;
-        snake.clear();
-        path.clear();
-        coloredRectangles.clear();
-        snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-        keyIn.right = true;
-        restartButton.setVisible(false); // Hide the restart button again
-        enemy.restartEnemy();
-    }
- public void spawnNewEnemies(int numberOfNewEnemies) {
-    for (int i = 0; i < numberOfNewEnemies; i++) {
-        enemies.add(new Enemy(/*Optional parameters for position and speed*/));
-    }
+ }
+ private boolean isPositionOccupied(int EboxX,int EboxY){
+        if (enemies.size()>1){
+        this.EboxX = EboxX;
+        this.EboxY = EboxY;
+        
+        for (int i = 1 ; i< enemies.size();i++){
+        Enemy prevEsnake = enemies.get(i-1);
+        Point prevEsnakeH = prevEsnake.getEnemyHead();
+        if ((((EboxX > prevEsnakeH.x+10 || EboxX < prevEsnakeH.x-10) && (EboxY >prevEsnakeH.y+10 ||EboxY <prevEsnakeH.y-10)) )/*&& !(EboxX > 4 && EboxX < 15 && EboxY >4 && EboxY <15)*/ ){
+        return true;
+            
+            }
+        
+        }
+        
 }
-private boolean checkCollisionWithEnemy() {
         return false;
-    // Check if the snake's head collides with the enemy
-   // return snakeHead.equals(new Point(enemy.getX(), enemy.getY()));
+ }
+private void checkEnemyCollisions() {
+    for (int i = 0; i < enemies.size(); i++) {
+        Enemy enemy1 = enemies.get(i);
+        Point enemy1H = enemy1.getEnemyHead();
+        for (int j = i + 1; j < enemies.size(); j++) {
+            Enemy enemy2 = enemies.get(j);
+            if (enemy2.getEnemyPath().contains(enemy1H)) {
+                enemies.remove(j);
+                enemy2.removeEnemy(); // Clear enemy's path and reset its position
+                j--; // Decrement j as the enemies list size is reduced
+            }
+        }
+    }
 }
+
+
+
+// public void spawnNewEnemies(int enemtCount) {
+//    for (int i = 0; i < numberOfNewEnemies; i++) {
+//        enemies.add(new Enemy(/*Optional parameters for position and speed*/));
+//    }
+//}
+
 
 //write the if statement to avoid using first loop
 //stop adding useless path when snake hits the border of new painted rec when its inside
@@ -393,4 +428,5 @@ private boolean checkCollisionWithEnemy() {
 //snake and enemies paint over each other
 //avoid enemies to spawn on each other
 //if the new direction in the enemy clas != with previous, do it again
+ //avoiding enemies to spawn in each other
 }

@@ -11,7 +11,6 @@ public class Enemy {
     private int originalTileSize = 16;
     private int scale = 3;
     private int tileSize = originalTileSize * scale;
-    private int speedN;
     private LinkedList<Point> Esnake;
     private LinkedList<Point> path;
     private LinkedList<ColoredRec> coloredRectangles;
@@ -33,21 +32,24 @@ public class Enemy {
     private Color[] enemyColors ;
     private Color enemyColor;
     private Color enemyHcolor;
+    
+    public LinkedList<Point> getEnemyPath() {
+        return path;
+    }
+    public Point getEnemyHead(){
+    return EsnakeHead;
+    }
 
-    public Enemy(/*int boxX , int boxY*/) {
-        //this.boxX = boxX;
-        //this.boxY = boxY;
+    public Enemy(int boxX, int boxY) {
+        this.boxX = boxX;
+        this.boxY= boxY;
         Esnake = new LinkedList<>();
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         pathColors = new LinkedList<>();
         previousPaths = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
-        while(true){
-        boxX = (int) (Math.random() * 30); 
-        boxY = (int) (Math.random() * 30); 
-        if (!(boxX > 7 && boxX < 16 && boxY >7 && boxY <16))break;
-        }
+        //generateEnemy();
         boxSize = 6;
         randomColor();
         enemyColors = randomColor();
@@ -228,15 +230,15 @@ public class Enemy {
     
     path.clear();
 }
+         
+
         
-        public void restartEnemy() {
+        
+        public void removeEnemy(/*int newBoxX, int newBoxY*/) {
         Esnake.clear();
         path.clear();
         coloredRectangles.clear();
-        Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-        Color[] newEnemyColors = randomColor();
-        enemyColor = newEnemyColors[0];
-        enemyHcolor = newEnemyColors[1];
+
     }
         
            

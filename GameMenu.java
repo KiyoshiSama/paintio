@@ -87,11 +87,11 @@ public class GameMenu extends javax.swing.JFrame {
         });
 
         enemyCount.setMaximum(10);
+        enemyCount.setMinimum(1);
         enemyCount.setPaintLabels(true);
         enemyCount.setPaintTicks(true);
         enemyCount.setSnapToTicks(true);
         enemyCount.setToolTipText("");
-        enemyCount.setValue(0);
         enemyCount.setOpaque(false);
         enemyCount.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -100,7 +100,7 @@ public class GameMenu extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("TNC_F1", 0, 21)); // NOI18N
-        jLabel1.setText(" 0, 1 ,  2  , 3 , 4 , 5 ,  6 , 7 , 8 , 9 , 10 ");
+        jLabel1.setText(" 1 ,  2  , 3 , 4 , 5 ,  6 , 7 , 8 , 9 , 10 ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
