@@ -109,7 +109,6 @@ public class Enemy {
                     isValidMove = true;
                     }
                 }
-                if (!path.isEmpty())rectIntersect(EsnakeHead);
                 isOutsideBox = (nextX < boxX || nextX >= boxX + boxSize || nextY < boxY || nextY >= boxY + boxSize);
                 
                         if (isOutsideBox ) {
@@ -125,22 +124,7 @@ public class Enemy {
                 Esnake.addFirst(new Point(nextX, nextY));
                 Esnake.removeLast();
             }
-        private void rectIntersect(Point head) {
-            for (ColoredRec currentRec : coloredRectangles) {
-                if (head.equals(new Point(currentRec.getX(), currentRec.getY()))) {
-                    fillnewBlock();
-                        break;
-                    }
-            }   
-        }
-        private boolean prevPaths(Point point) {
-            for (LinkedList<Point> prevPath : previousPaths) {
-                if (prevPath.contains(point)) {
-                    return true;
-                }
-            }
-                    return false;
-            }
+        
         private boolean prevRects(Point point) {
             for (ColoredRec coloredRectangle : coloredRectangles) {
                 int x = coloredRectangle.getX();
@@ -166,131 +150,77 @@ public class Enemy {
             
         }
         private void fillBlock() {
-            for (Point point : path) {
-                int x = point.x;
-                int y = point.y;
+    for (Point point : path) {
+    int x = point.x;
+    int y = point.y;
 
-                minX = Math.min(minX, x);
-                minY = Math.min(minY, y);
-                maxX = Math.max(maxX, x);
-                maxY = Math.max(maxY, y);
-            }
-
-        for (int i = path.size() - 1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y + 1;
-        Point currentPoint;
-        if (!path.contains(new Point(x,modY))){
-        for (int k = 1; k < maxX- minX; k++) {
-            currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) /*&& !prevRects(currentPoint)*/) {
-                modY++;
-            } else {
-                modY++;
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, enemyColor);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                break;
-            }
-        }
-        }
-        
-    }
-    for (int i = path.size()-1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y - 1;
-        Point currentPoint;
-      //  if (!path.contains(new Point(x,modY))){
-        for (int k = 0; k < maxX- minX; k++) {
-            currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect)) {
-                modY--;
-            } else {
-               // modY--;
-                ColoredRec coloredRectangle = new ColoredRec(x, y+1, modY - y, enemyColor);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                    break;
-                }
-   //     }
-                }
-        
-            }
-    
-            previousPaths.add(new LinkedList<>(path));
-            path.clear();
-        }
-        private void fillnewBlock(){
-            previousPaths.add(new LinkedList<>(path));
-
-            for (Point point : path) {
-                int x = point.x;
-                int y = point.y;
-
-            minX = Math.min(minX, x);
-            minY = Math.min(minY, y);
-            maxX = Math.max(maxX, x);
-            maxY = Math.max(maxY, y);
-            }
-
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+}
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
         
         int modY = y + 1;
-         if (!path.contains(new Point(x,modY))){
-        for (int k = 1; k < maxX- minX; k++) {
-            Point currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!prevPaths(currentPoint) && !box.intersects(currentRect)) {
-                modY++;
-            } else {
-                modY++;
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, enemyColor);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                break;
-            }
-        }
-         }
-        
-    }
-    for (int i = path.size()-1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y - 1;
         Point currentPoint;
-         //if (!path.contains(new Point(x,modY))){
-        for (int k = 1; k < maxX- minX; k++) {
+        Color color = Color.WHITE;
+        if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        }
+        else{
+        for (int k = 0; k < maxY- minY; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!prevRects(currentPoint)) {
-                modY--;
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
+                modY++;
             } else {
-               /* if (currentRect.intersects(box) || prevPaths(currentPoint)) {
-                    break;
-                }*/
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, enemyColor);
+                modY++;
+                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;
             }
         }
-         //}
-        
     }
         
+    }
+    
+    for (int i = 0; i <= path.size()-1; i++) {
+        int x = path.get(i).x;
+        int y = path.get(i).y;
+        if (!prevRects(path.get(i))){
+        int modY = y - 1;
+        Color color = Color.WHITE; // Set the default color for rectangles
+        Point currentPoint;
+      if (path.contains(new Point(x,modY))){
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        }
+      else{
+        for (int k = 0; k < maxY- minY; k++) {
+            currentPoint = new Point(x, modY);
+            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
+                modY--;
+            } else {
+                ColoredRec coloredRectangle = new ColoredRec(x, modY, y-modY+1, color);
+                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+               
+                break;
+            }
+
+    }
+        }
+    }  
+    }
+    
+    
     path.clear();
-
-
 }
+        
         public void restartEnemy() {
         Esnake.clear();
         path.clear();

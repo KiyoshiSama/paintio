@@ -19,8 +19,6 @@ public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Point> snake;
     private LinkedList<Point> path;
     private LinkedList<ColoredRec> coloredRectangles;
-    private LinkedList<Color> pathColors; 
-    private LinkedList<LinkedList<Point>> previousPaths;
     private boolean useMouseControls = false;
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
@@ -75,10 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         snake = new LinkedList<>();
         path = new LinkedList<>();
-        pathColors = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         enemy = new Enemy();
-        previousPaths = new LinkedList<>();
         enemies = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
         enemies.add(new Enemy());
@@ -131,13 +127,12 @@ public void paintComponent(Graphics g) {
     g2d.setColor(Color.WHITE);
     g2d.fillRect(boxX * tileSize + cameraOffsetX, boxY * tileSize + cameraOffsetY, boxSize * tileSize, boxSize * tileSize);
 
-    // Draw the path and store the colors in pathColors
+    // Draw the path
     for (int i = 0; i < path.size(); i++) {
         Point segment = path.get(i);
         Color color = Color.WHITE;
         g2d.setColor(color);
         g2d.fillRect(segment.x * tileSize + cameraOffsetX, segment.y * tileSize + cameraOffsetY, tileSize, tileSize);
-        pathColors.add(color); // Store the color in pathColors
     }
 
     // Draw the colored rectangles from the coloredRectangles list
@@ -212,8 +207,6 @@ public void paintComponent(Graphics g) {
         // Move the snake in the current direction
         nextX = snake.getFirst().x;
         nextY = snake.getFirst().y;
-       // snakeHead = new Point(nextX , nextY);
-        
         
         if (useKeyboardControls){
         if (keyIn.left) {
@@ -238,8 +231,7 @@ public void paintComponent(Graphics g) {
         }
        
 
-         snakeHead = new Point(nextX, nextY);
-         if (!path.isEmpty())rectIntersect(snakeHead);    
+         snakeHead = new Point(nextX, nextY);   
          cameraOffsetX = -nextX * tileSize + getWidth() / 2;
          cameraOffsetY = -nextY * tileSize + getHeight() / 2;
         if (path.contains(snakeHead)) {
@@ -288,7 +280,6 @@ private void fillBlock() {
     maxX = Math.max(maxX, x);
     maxY = Math.max(maxY, y);
 }
-
     for (int i = path.size() - 1; i >= 0; i--) {
         int x = path.get(i).x;
         int y = path.get(i).y;
@@ -304,7 +295,7 @@ private void fillBlock() {
         for (int k = 0; k < maxY- minY; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) ) {
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
                 modY++;
             } else {
                 modY++;
@@ -330,14 +321,13 @@ private void fillBlock() {
         coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
         }
       else{
-        for (int k = 0; k < maxX- minX; k++) {
+        for (int k = 0; k < maxY- minY; k++) {
             currentPoint = new Point(x, modY);
             Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint)) {
+            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
                 modY--;
             } else {
-               // modY--;
-                ColoredRec coloredRectangle = new ColoredRec(x, y+1, modY - y, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, modY, y-modY+1, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;
@@ -349,94 +339,7 @@ private void fillBlock() {
     }
     
     
-    previousPaths.add(new LinkedList<>(path));
-    
-    
     path.clear();
-}
- 
-private void rectIntersect(Point head) {
-    for (ColoredRec currentRec : coloredRectangles) {
-        if (head.equals(new Point(currentRec.getX(), currentRec.getY()))) {
-            fillnewBlock();
-            break;
-        }
-    }
-}
-private void fillnewBlock(){
-    previousPaths.add(new LinkedList<>(path));
-
-    for (Point point : path) {
-    int x = point.x;
-    int y = point.y;
-
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x);
-    maxY = Math.max(maxY, y);
-}
-
-    for (int i = path.size() - 1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y + 1;
-        Color color = Color.WHITE; // Set the default color for rectangles
-         if (!path.contains(new Point(x,modY))){
-        for (int k = 1; k < maxX- minX; k++) {
-            Point currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!prevPaths(currentPoint) && !box.intersects(currentRect)) {
-                modY++;
-            } else {
-                modY++;
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                break;
-            }
-        }
-         }
-        
-    }
-    for (int i = path.size()-1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y - 1;
-        Color color = Color.WHITE; // Set the default color for rectangles
-        Point currentPoint;
-         //if (!path.contains(new Point(x,modY))){
-        for (int k = 1; k < maxX- minX; k++) {
-            currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!prevRects(currentPoint)) {
-                modY--;
-            } else {
-               /* if (currentRect.intersects(box) || prevPaths(currentPoint)) {
-                    break;
-                }*/
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                break;
-            }
-        }
-         //}
-        
-    }
-        
-    path.clear();
-
-
-}
-private boolean prevPaths(Point point) {
-    for (LinkedList<Point> prevPath : previousPaths) {
-        if (prevPath.contains(point)) {
-            return true;
-        }
-    }
-    return false;
 }
 private boolean prevRects(Point point) {
     for (ColoredRec coloredRectangle : coloredRectangles) {
