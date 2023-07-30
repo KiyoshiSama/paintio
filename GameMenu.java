@@ -5,6 +5,7 @@ package paintio.paintio;
 public class GameMenu extends javax.swing.JFrame {
 
     public int speedN;
+    public int enemyNum;
     public GameMenu() {
         initComponents();
     }
@@ -23,11 +24,14 @@ public class GameMenu extends javax.swing.JFrame {
         StartBut = new javax.swing.JButton();
         GameSpeed = new javax.swing.JComboBox<>();
         GameDiff = new javax.swing.JComboBox<>();
+        enemyCount = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 102));
 
+        jTextField1.setEditable(false);
         jTextField1.setBackground(new java.awt.Color(255, 153, 51));
         jTextField1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 24)); // NOI18N
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -52,9 +56,12 @@ public class GameMenu extends javax.swing.JFrame {
 
         GameSpeed.setBackground(new java.awt.Color(255, 153, 102));
         GameSpeed.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        GameSpeed.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOW", "MEDIUM", "HIGH" }));
-        GameSpeed.setToolTipText("");
+        GameSpeed.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SPEED:", "LOW", "MEDIUM", "HIGH" }));
+        GameSpeed.setToolTipText("SPEED:");
         GameSpeed.setBorder(null);
+        GameSpeed.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        GameSpeed.setDoubleBuffered(true);
+        GameSpeed.setName("SPEED:"); // NOI18N
         GameSpeed.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 GameSpeedItemStateChanged(evt);
@@ -68,26 +75,51 @@ public class GameMenu extends javax.swing.JFrame {
 
         GameDiff.setBackground(new java.awt.Color(255, 153, 102));
         GameDiff.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Easy", "NORMAL", "Hard" }));
+        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DIFFICULITY:", "EASY", "NORMAL", "HARD" }));
         GameDiff.setToolTipText("");
         GameDiff.setBorder(null);
+        GameDiff.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        GameDiff.setDoubleBuffered(true);
         GameDiff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GameDiffActionPerformed(evt);
             }
         });
 
+        enemyCount.setMaximum(10);
+        enemyCount.setPaintLabels(true);
+        enemyCount.setPaintTicks(true);
+        enemyCount.setSnapToTicks(true);
+        enemyCount.setToolTipText("");
+        enemyCount.setValue(0);
+        enemyCount.setOpaque(false);
+        enemyCount.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                enemyCountStateChanged(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("TNC_F1", 0, 21)); // NOI18N
+        jLabel1.setText(" 0, 1 ,  2  , 3 , 4 , 5 ,  6 , 7 , 8 , 9 , 10 ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(197, 197, 197)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(GameSpeed, 0, 435, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                    .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(197, 197, 197)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(GameSpeed, 0, 435, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(enemyCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(229, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -100,7 +132,11 @@ public class GameMenu extends javax.swing.JFrame {
                 .addComponent(GameDiff, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(GameSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addGap(90, 90, 90)
+                .addComponent(enemyCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -157,10 +193,12 @@ public class GameMenu extends javax.swing.JFrame {
 
     private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
         String speedS = GameSpeed.getSelectedItem().toString();
-        if ("LOW".equals(speedS))speedN = 5;
+        if ("SPEED:".equals(speedS))speedN = 10;
         setVisible(false);
        InputSelect inputFrame = new InputSelect(this);
        inputFrame.setVisible(true);
+       
+       
     }//GEN-LAST:event_StartButMouseClicked
 
     private void GameSpeedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GameSpeedItemStateChanged
@@ -170,6 +208,14 @@ public class GameMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_GameSpeedItemStateChanged
 
+    private void enemyCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_enemyCountStateChanged
+        enemyNum = enemyCount.getValue();
+    }//GEN-LAST:event_enemyCountStateChanged
+    
+    public int getEnemyCount(){
+    return enemyNum;
+    }
+    
     public int getSpeed(){
     return speedN;
     }
@@ -209,6 +255,8 @@ public class GameMenu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> GameDiff;
     private javax.swing.JComboBox<String> GameSpeed;
     private javax.swing.JButton StartBut;
+    private javax.swing.JSlider enemyCount;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

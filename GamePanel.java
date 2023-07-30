@@ -63,9 +63,15 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUseKeyboardControls(boolean useKeyboardControls) {
         this.useKeyboardControls = useKeyboardControls;
     }
+    public int getSnakeX (){
+    return boxX;
+    }
+    public int getSnakeY(){
+    return boxY;
+    }
 
 
-    public GamePanel(int speedN) {
+    public GamePanel(int speedN, int enemyCount) {
 
 
         this.setBackground(Color.BLACK);
@@ -75,8 +81,8 @@ public class GamePanel extends JPanel implements Runnable {
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         enemy = new Enemy();
-        enemies = new ArrayList<>(3);
-        for (int i = 0; i < 3; i++) {
+        enemies = new ArrayList<>(enemyCount);
+        for (int i = 0; i < enemyCount; i++) {
         enemies.add(new Enemy());
     }
        // enemies = new ArrayList<>();

@@ -123,7 +123,8 @@ public class InputSelect extends javax.swing.JFrame {
                         frame.setResizable(true);
 
                         int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
-                        GamePanel gamePanel = new GamePanel(speedN);
+                        int enemyNum = gameMenu.getEnemyCount(); // Get the speedN value from the GameMenu
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum);
 
                         // Set the chosen input mode in the GamePanel
                         gamePanel.setUseMouseControls(useMouseControls);
@@ -150,7 +151,8 @@ public class InputSelect extends javax.swing.JFrame {
                         frame.setResizable(true);
 
                         int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
-                        GamePanel gamePanel = new GamePanel(speedN);
+                        int enemyNum = gameMenu.getEnemyCount(); // Get the speedN value from the GameMenu
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum);
 
 
                         // Set the chosen input mode in the GamePanel
