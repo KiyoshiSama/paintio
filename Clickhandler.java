@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 
 public class Clickhandler extends MouseAdapter {
@@ -23,6 +24,11 @@ public class Clickhandler extends MouseAdapter {
     private ImageIcon arrowDownImage;
     private ImageIcon arrowLeftImage;
     private ImageIcon arrowRightImage;
+    public boolean rightClick;
+    private WeaponA weapon;
+
+    
+
     public Clickhandler() {
         arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\U.png");
         arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\D.png");
@@ -44,6 +50,10 @@ public class Clickhandler extends MouseAdapter {
         down = false;
         left = false;
         right = false;
+        rightClick = false;
+         if (SwingUtilities.isLeftMouseButton(e)) {
+           
+        
         if (arrowUpRect.contains(mousePoint)) {
             up = true;
 
@@ -52,13 +62,19 @@ public class Clickhandler extends MouseAdapter {
         } else if (arrowLeftRect.contains(mousePoint)) {
             left = true;
         } else if (arrowRightRect.contains(mousePoint)) {
-            right = true;
-        } else {
+            right = true;    
+        }
+        else if (SwingUtilities.isRightMouseButton(e)) {
+            weapon.shoot();
+        }
+        }else {
             up = false;
             down = false;
             left = false;
             right = false;
+            rightClick = false;
         }
+
     }
     public void drawArrows(Graphics2D g2d) {
         // Draw the arrows using the Graphics2D object

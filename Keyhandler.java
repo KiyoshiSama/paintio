@@ -5,7 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keyhandler implements KeyListener {
-    public boolean up, left, down, right ;
+    public boolean up, left, down, right , enter ;
+    public String lastDirection;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -19,16 +20,32 @@ public class Keyhandler implements KeyListener {
         down = false;
         right = false;
         left = false;
-        if (code == KeyEvent.VK_LEFT) {
-            left = true;
-        } else if (code == KeyEvent.VK_RIGHT) {
-            right = true;
-        } else if (code == KeyEvent.VK_UP) {
-            up = true;
-        } else if (code == KeyEvent.VK_DOWN) {
-            down = true;
+        enter = false;
+        switch (code) {
+            case KeyEvent.VK_LEFT:
+                left = true;
+                lastDirection = "LEFT";
+                break;
+            case KeyEvent.VK_RIGHT:
+                right = true;
+                lastDirection = "RIGHT";
+                break;
+            case KeyEvent.VK_UP:
+                up = true;
+                lastDirection = "UP";
+                break;
+            case KeyEvent.VK_DOWN:
+                down = true;
+                lastDirection = "DOWN";
+                break;
+            default:
+                break;
         }
+        if (code == KeyEvent.VK_ENTER )enter = true;
 
+    }
+    public String getLastDirection() {
+        return lastDirection;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Enemy {
     boolean isValidMove;
     private int boxX;
     private int boxY;
-    private int boxSize;
+    private int boxSize = 9;
     private int nextX;
     private int nextY;
     int minX = Integer.MAX_VALUE;
@@ -50,7 +50,6 @@ public class Enemy {
         previousPaths = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         //generateEnemy();
-        boxSize = 6;
         randomColor();
         enemyColors = randomColor();
         enemyColor = enemyColors[0];
@@ -230,11 +229,8 @@ public class Enemy {
     
     path.clear();
 }
-         
 
-        
-        
-        public void removeEnemy(/*int newBoxX, int newBoxY*/) {
+        public void removeEnemy() {
         Esnake.clear();
         path.clear();
         coloredRectangles.clear();

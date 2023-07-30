@@ -12,6 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
 
 public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Point> snake;
@@ -21,9 +25,8 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
     private ImageIcon gameOverImg;
-    private Enemy enemy;
-    private ArrayList<Enemy> enemies;
-    
+    private WeaponA weapon; // Add this variable to hold the weapon object
+    private ArrayList<Enemy> enemies;    
     private int originalTileSize = 16;
     private int scale = 3;
     private int tileSize = originalTileSize * scale;
@@ -64,16 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUseKeyboardControls(boolean useKeyboardControls) {
         this.useKeyboardControls = useKeyboardControls;
     }
-    public int getSnakeX (){
-    return boxX;
-    }
-    public int getSnakeY(){
-    return boxY;
-    }
-    public ArrayList<Enemy> getEnemiesArray(){
-    return enemies;
-    
-    }
+
 
 
     public GamePanel(int speedN, int enemyCount) {
@@ -90,8 +84,8 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < enemyCount; i++) {
         generateEnemy();
         enemies.add(new Enemy(EboxX, EboxY));
-        
-    }
+        }
+        weapon = new WeaponA(enemies);
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         isOutsideBox = false;
         mouseIn = new Clickhandler();
@@ -108,11 +102,9 @@ public class GamePanel extends JPanel implements Runnable {
         mouseIn.right = true;
 
 
-        this.addKeyListener(keyIn);
         this.addMouseListener(mouseIn);
         this.addKeyListener(keyIn);
         setFocusable(true);
-
       
     }
 
@@ -146,6 +138,35 @@ public void paintComponent(Graphics g) {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, tileSize, width * tileSize);
     }
+    
+    if (weapon.isShooting()) {
+    String direction = keyIn.getLastDirection();
+
+    if (direction != null) {
+        int boxOffsetX = 0;
+        int boxOffsetY = 0;
+
+        switch (direction) {
+            case "UP":
+                boxOffsetY = -5;
+                break;
+            case "DOWN":
+                boxOffsetY = 5;
+                break;
+            case "LEFT":
+                boxOffsetX = -5;
+                break;
+            case "RIGHT":
+                boxOffsetX = 5;
+                break;
+        }
+
+        // Draw the 3x3 box
+        g2d.setColor(Color.WHITE);
+        int weaponAboxS = 3;
+        g2d.fillRect((snakeHead.x + boxOffsetX) * tileSize + cameraOffsetX , (snakeHead.y + boxOffsetY) * tileSize + cameraOffsetY, weaponAboxS * tileSize, weaponAboxS * tileSize);
+    }
+}
 
     // Draw the snake
     for (Point segment : snake) {
@@ -203,6 +224,20 @@ public void paintComponent(Graphics g) {
             
         }
     }
+//     public void keyPressed(KeyEvent e) {
+//        // Handle other key events...
+//
+//        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//            int centerX = snakeHead.x;
+//            int centerY = snakeHead.y;
+//
+//            // Check if the weapon has ammo left
+//            if (weapon.getAmmo() > 0) {
+//                weapon.eliminateEnemiesIn3x3Area(new Point(centerX, centerY));
+//               // weapon.decrementAmmo(); // Decrement the ammo count
+//            }
+//        }
+//    }
 
     public void update() {
         if (gameOver ) return; // Return if the game is over
@@ -219,7 +254,31 @@ public void paintComponent(Graphics g) {
             nextY--;
         } else if (keyIn.down) {
             nextY++;
-        }}
+        }
+        String direction = keyIn.getLastDirection();
+        if (keyIn.enter){
+        weapon.shoot();
+
+        if(direction != null){
+       switch (direction) {
+            case "UP":
+                nextY--;
+                break;
+            case "DOWN":
+                nextY++;
+                break;
+            case "LEFT":
+                nextX--;
+                break;
+            case "RIGHT":
+                nextX++;
+                break;
+        }
+
+
+        }     
+        }
+        }
          if (useMouseControls) {
             if (mouseIn.up) {
                 nextY--;
@@ -231,9 +290,15 @@ public void paintComponent(Graphics g) {
                 nextX++;
             }
         }
-       
+        snakeHead = new Point(nextX, nextY);   
+//       if (keyIn.enter) {
+//            weapon.shoot();
+//              /*  if (weapon.isShooting()) {
+//                weapon.eliminateEnemiesIn3x3Area(snakeHead);
+//            }*/
+//        }
 
-         snakeHead = new Point(nextX, nextY);   
+         
          cameraOffsetX = -nextX * tileSize + getWidth() / 2;
          cameraOffsetY = -nextY * tileSize + getHeight() / 2;
         if (path.contains(snakeHead)) {
@@ -264,8 +329,8 @@ public void paintComponent(Graphics g) {
              Enemy enemyIndex = enemies.get(i);
              if (enemyIndex.getEnemyPath().contains(snakeHead)){
                 enemies.remove(i);
-                enemyIndex.removeEnemy(); // Clear enemy's path and reset its position
-                i--; // Decrement i as the enemies list size is reduced
+                enemyIndex.removeEnemy();
+                i--;
 
         }
     }
@@ -277,6 +342,11 @@ public void paintComponent(Graphics g) {
         }
     }  
        checkEnemyCollisions();
+       
+       if (enemies.isEmpty()){
+       gameOver = true;
+       return;
+       }
     }
 
 
@@ -368,15 +438,15 @@ private boolean prevRects(Point point) {
 }
  public void generateEnemy(){
         while(true){
-        EboxX = (int) (Math.random() * 20); 
-        EboxY = (int) (Math.random() * 20); 
-        if (!isPositionOccupied(EboxX,EboxY)){
+        EboxX = (int) (Math.random() * 50); 
+        EboxY = (int) (Math.random() * 50); 
+        if ((!(EboxX > 4 && EboxX < 15 && EboxY >4 && EboxY <15)) /*&& isPositionOccupied(boxX, boxY)*/){
             break;
         }
         }
 
  }
- private boolean isPositionOccupied(int EboxX,int EboxY){
+ /*private boolean isPositionOccupied(int EboxX,int EboxY){
         if (enemies.size()>1){
         this.EboxX = EboxX;
         this.EboxY = EboxY;
@@ -384,16 +454,13 @@ private boolean prevRects(Point point) {
         for (int i = 1 ; i< enemies.size();i++){
         Enemy prevEsnake = enemies.get(i-1);
         Point prevEsnakeH = prevEsnake.getEnemyHead();
-        if ((((EboxX > prevEsnakeH.x+10 || EboxX < prevEsnakeH.x-10) && (EboxY >prevEsnakeH.y+10 ||EboxY <prevEsnakeH.y-10)) )/*&& !(EboxX > 4 && EboxX < 15 && EboxY >4 && EboxY <15)*/ ){
-        return true;
+        if ((EboxX > prevEsnakeH.x+10 && EboxX < prevEsnakeH.x-10 && EboxY >prevEsnakeH.y+10 && EboxY <prevEsnakeH.y-10) && ){
+        
             
             }
-        
         }
-        
 }
-        return false;
- }
+ }*/
 private void checkEnemyCollisions() {
     for (int i = 0; i < enemies.size(); i++) {
         Enemy enemy1 = enemies.get(i);
@@ -419,14 +486,10 @@ private void checkEnemyCollisions() {
 
 
 //write the if statement to avoid using first loop
-//stop adding useless path when snake hits the border of new painted rec when its inside
  //add color select for snake
-//add prev rects in downward checking fillnew
-//add boxintersect in upward checking fillnew
-// enemies eliminate each other
 //choose player color in menu
 //snake and enemies paint over each other
 //avoid enemies to spawn on each other
 //if the new direction in the enemy clas != with previous, do it again
- //avoiding enemies to spawn in each other
+// create a winner screen
 }
