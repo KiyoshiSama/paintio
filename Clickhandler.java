@@ -26,6 +26,8 @@ public class Clickhandler extends MouseAdapter {
     private ImageIcon arrowRightImage;
     public boolean rightClick;
     private WeaponA weapon;
+    public String lastDirection = "RIGHT";
+
 
     
 
@@ -56,25 +58,26 @@ public class Clickhandler extends MouseAdapter {
         
         if (arrowUpRect.contains(mousePoint)) {
             up = true;
-
+            lastDirection = "UP";
         } else if (arrowDownRect.contains(mousePoint)) {
             down = true;
+            lastDirection = "DOWN";
         } else if (arrowLeftRect.contains(mousePoint)) {
             left = true;
+            lastDirection = "LEFT";
         } else if (arrowRightRect.contains(mousePoint)) {
-            right = true;    
+            right = true; 
+            lastDirection = "RIGHT";
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            weapon.shoot();
-        }
-        }else {
-            up = false;
-            down = false;
-            left = false;
-            right = false;
-            rightClick = false;
-        }
+                    rightClick = true;
 
+        }
+        }
+         
+    }
+    public String getLastDirection() {
+        return lastDirection;
     }
     public void drawArrows(Graphics2D g2d) {
         // Draw the arrows using the Graphics2D object

@@ -126,7 +126,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
     if (weapon.isShooting()) {
     weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
-    weapon.drawBulletTrail(g2d,tileSize);
     weapon.killIn3x3(snakeHead);
 
     }
@@ -236,15 +235,28 @@ public class GamePanel extends JPanel implements Runnable {
         }
         }
          if (useMouseControls) {
-            if (mouseIn.up) {
+             String direction = keyIn.getLastDirection();
+            weapon.setLastSnakeDirection(direction); // Set the last direction in the WeaponA class
+             if(direction != null){
+            switch (direction) {
+            case "UP":
                 nextY--;
-            } else if (mouseIn.down) {
-                 nextY++;
-            } else if (mouseIn.left) {
+                break;
+            case "DOWN":
+                nextY++;
+                break;
+            case "LEFT":
                 nextX--;
-            } else if (mouseIn.right) {
+                break;
+            case "RIGHT":
                 nextX++;
-            }
+                break;
+        }
+        if (mouseIn.rightClick){
+        weapon.shoot();
+        mouseIn.rightClick = false;
+        }
+            
         }
         snakeHead = new Point(nextX, nextY);   
          
@@ -294,8 +306,8 @@ public class GamePanel extends JPanel implements Runnable {
        
        if (enemies.isEmpty()){
        gameOver = true;
-       return;
        }
+    }
     }
 
 
@@ -446,4 +458,6 @@ private void checkEnemyCollisions() {
 //when the enemy is inside its own box, its not being nlimnited
 //should debug the weaponA fully
 //add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
+//replace prevrects with .contains
+////add to readme: we dont have 189 degree rotation at this game
 }
