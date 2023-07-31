@@ -76,8 +76,9 @@ public class Enemy {
             int recX = coloredRectangle.getX();
             int recY = coloredRectangle.getY();
             int width = coloredRectangle.getWidth();
+            int height = coloredRectangle.getHeight();
             g2d.setColor(enemyColor);
-            g2d.fillRect(recX * tileSize + cameraOffsetX, recY * tileSize + cameraOffsetY, tileSize, width * tileSize);
+            g2d.fillRect(recX * tileSize + cameraOffsetX, recY * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
         }
         // Draw the Esnake
         for (Point segment : Esnake) {
@@ -139,9 +140,10 @@ public class Enemy {
                 int x = coloredRectangle.getX();
                 int y = coloredRectangle.getY();
                 int width = coloredRectangle.getWidth();
+                int height = coloredRectangle.getHeight();
 
                 // Check if the point lies inside the boundaries of the colored rectangle
-            if (point.x >= x && point.x < x + 9 && point.y >= y && point.y < y + width) {
+            if (point.x >= x && point.x < x + height && point.y >= y && point.y < y + width) { //**mayy cause problems**
                 return true;
                 }
             }
@@ -176,7 +178,7 @@ public class Enemy {
         Point currentPoint;
         Color color = Color.WHITE;
         if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
         coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
         }
         else{
@@ -187,7 +189,7 @@ public class Enemy {
                 modY++;
             } else {
                 modY++;
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, y,1 ,modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;
@@ -205,7 +207,7 @@ public class Enemy {
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
       if (path.contains(new Point(x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
         coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
         }
       else{
@@ -215,7 +217,7 @@ public class Enemy {
             if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
                 modY--;
             } else {
-                ColoredRec coloredRectangle = new ColoredRec(x, modY, y-modY+1, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;

@@ -8,13 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
+
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -85,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
         generateEnemy();
         enemies.add(new Enemy(EboxX, EboxY));
         }
-        weapon = new WeaponA(enemies);
+        weapon = new WeaponA(enemies,coloredRectangles);
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         isOutsideBox = false;
         mouseIn = new Clickhandler();
@@ -109,9 +105,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     @Override
-public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2d = (Graphics2D) g;
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
 
 
     for (Enemy enemyNum : enemies) {
@@ -128,22 +124,24 @@ public void paintComponent(Graphics g) {
         g2d.setColor(color);
         g2d.fillRect(segment.x * tileSize + cameraOffsetX, segment.y * tileSize + cameraOffsetY, tileSize, tileSize);
     }
+    if (weapon.isShooting()) {
+    weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
+    weapon.drawBulletTrail(g2d,tileSize);
+    weapon.killIn3x3(snakeHead);
 
+    }
     // Draw the colored rectangles from the coloredRectangles list
     for (ColoredRec coloredRectangle : coloredRectangles) {
         int x = coloredRectangle.getX();
         int y = coloredRectangle.getY();
         int width = coloredRectangle.getWidth();
+        int height = coloredRectangle.getHeight();
         
         g2d.setColor(Color.WHITE);
-        g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, tileSize, width * tileSize);
+        g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
     }
     
-    if (weapon.isShooting()) {
-    weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
-    weapon.drawBulletTrail(g2d,tileSize);
-
-    }
+    
     
     
 
@@ -203,20 +201,6 @@ public void paintComponent(Graphics g) {
             
         }
     }
-//     public void keyPressed(KeyEvent e) {
-//        // Handle other key events...
-//
-//        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//            int centerX = snakeHead.x;
-//            int centerY = snakeHead.y;
-//
-//            // Check if the weapon has ammo left
-//            if (weapon.getAmmo() > 0) {
-//                weapon.eliminateEnemiesIn3x3Area(new Point(centerX, centerY));
-//               // weapon.decrementAmmo(); // Decrement the ammo count
-//            }
-//        }
-//    }
 
     public void update() {
         if (gameOver ) return; // Return if the game is over
@@ -263,13 +247,6 @@ public void paintComponent(Graphics g) {
             }
         }
         snakeHead = new Point(nextX, nextY);   
-//       if (keyIn.enter) {
-//            weapon.shoot();
-//              /*  if (weapon.isShooting()) {
-//                weapon.eliminateEnemiesIn3x3Area(snakeHead);
-//            }*/
-//        }
-
          
          cameraOffsetX = -nextX * tileSize + getWidth() / 2;
          cameraOffsetY = -nextY * tileSize + getHeight() / 2;
@@ -341,7 +318,7 @@ private void fillBlock() {
         Point currentPoint;
         Color color = Color.WHITE; // Set the default color for rectangles
         if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
         coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
         }
         else{
@@ -352,7 +329,7 @@ private void fillBlock() {
                 modY++;
             } else {
                 modY++;
-                ColoredRec coloredRectangle = new ColoredRec(x, y, modY - y, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, y,1 ,modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;
@@ -370,7 +347,7 @@ private void fillBlock() {
         Color color = Color.WHITE; // Set the default color for rectangles
         Point currentPoint;
       if (path.contains(new Point(x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1, color);
+        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
         coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
         }
       else{
@@ -380,7 +357,7 @@ private void fillBlock() {
             if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
                 modY--;
             } else {
-                ColoredRec coloredRectangle = new ColoredRec(x, modY, y-modY+1, color);
+                ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
                
                 break;
@@ -399,9 +376,10 @@ private boolean prevRects(Point point) {
         int x = coloredRectangle.getX();
         int y = coloredRectangle.getY();
         int width = coloredRectangle.getWidth();
+        int height = coloredRectangle.getHeight();
 
         // Check if the point lies inside the boundaries of the colored rectangle
-        if (point.x >= x && point.x < x + 1 && point.y >= y && point.y < y + width) {
+        if (point.x >= x && point.x < x + height && point.y >= y && point.y < y + width) {
             return true;
         }
     }
@@ -465,4 +443,7 @@ private void checkEnemyCollisions() {
 //if the new direction in the enemy clas != with previous, do it again
 // create a winner screen
 //adding a delay beetween guntrail and box creating
+//when the enemy is inside its own box, its not being nlimnited
+//should debug the weaponA fully
+//add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
 }

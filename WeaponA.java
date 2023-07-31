@@ -12,22 +12,29 @@ import java.util.LinkedList;
 public class WeaponA {
     private int ammo;
     private boolean isShooting;
-    private Enemy enemy;
+    private int tileSize;
     private ArrayList<Enemy> enemies;
     private Keyhandler keyIn;
     private String lastSnakeDirection;
     private int bulletStartPosX;
     private int bulletStartPosY ;
     private float redOpacity;//Initial opacity value
+    private int AboxX;
+    private int AboxY;
+    private LinkedList<ColoredRec> coloredRectangles;
+    private int boxOffsetX;
+    private int boxOffsetY;
 
 
-
-    public WeaponA(ArrayList<Enemy> enemies) {
+    public WeaponA(ArrayList<Enemy> enemies,LinkedList<ColoredRec> coloredRectangles) {
         ammo = 5;
         isShooting = false;
         this.enemies = enemies;
         keyIn = new Keyhandler();
+        tileSize = 48;
         redOpacity =0.5f ;
+        this.coloredRectangles = coloredRectangles;
+        
         
     
 
@@ -48,72 +55,43 @@ public class WeaponA {
     }
     }
 
-    public void reset() {
-        ammo = 5;
-        isShooting = false;
-    }
 
     public int getAmmo() {
         return ammo;
     }
     
-    private boolean isWithin3x3Area(int x, int y, int centerX, int centerY) {
-        return Math.abs(x - centerX) <= 1 && Math.abs(y - centerY) <= 1;
+    public void setRedOpacity(float opacity) {
+        redOpacity = Math.max(0.0f, Math.min(1.0f, opacity));
     }
     
-    public String getDirection() {
-    if (keyIn.up) {
-        return "UP";
-    } else if (keyIn.down) {
-        return "DOWN";
-    } else if (keyIn.left) {
-        return "LEFT";
-    } else if (keyIn.right) {
-        return "RIGHT";
-    }
-    return null;
-}
-
-    public void eliminateEnemiesIn3x3Area(Point centerPoint) {
-    for (int i = 0; i < enemies.size(); i++) {
-        Enemy enemyIndex = enemies.get(i);
-        Point enemyHead = enemyIndex.getEnemyHead();
-        if (isWithin3x3Area(enemyHead.x, enemyHead.y, centerPoint.x, centerPoint.y)) {
-            enemies.remove(i);
-            enemyIndex.removeEnemy();
-            i--;
-        } else {
-            LinkedList<Point> enemyPath = enemyIndex.getEnemyPath();
-            for (int j = 0; j < enemyPath.size(); j++) {
-                Point pathPoint = enemyPath.get(j);
-                if (isWithin3x3Area(pathPoint.x, pathPoint.y, centerPoint.x, centerPoint.y)) {
-                    enemies.remove(j);
-                    enemyIndex.removeEnemy();
-                    break;
-                }
-            }
-        }
-    }
-}
     public void weaponAdraw(Graphics2D g2d,Point snakeHead,int tileSize,int cameraOffsetX,int cameraOffsetY){
         
-
     if (lastSnakeDirection != null) {
-        int boxOffsetX = 0;
-        int boxOffsetY = 0;
+         boxOffsetX = 0;
+         boxOffsetY = 0;
+        AboxX = 0;
+        AboxY= 0;
   
         switch (lastSnakeDirection) {
             case "UP":
                 boxOffsetY = -5;
+                AboxX = bulletStartPosX;
+                AboxY = bulletStartPosY-(3*tileSize);
                 break;
             case "DOWN":
                 boxOffsetY = 5;
+                AboxX = bulletStartPosX;
+                AboxY = bulletStartPosY;
                 break;
             case "LEFT":
                 boxOffsetX = -5;
+                AboxX = bulletStartPosX-(3*tileSize);
+                AboxY = bulletStartPosY;
                 break;
             case "RIGHT":
                 boxOffsetX = +5;
+                AboxX = bulletStartPosX;
+                AboxY = bulletStartPosY;
                 break;
         }
 
@@ -121,7 +99,8 @@ public class WeaponA {
         g2d.setColor(Color.WHITE);
         int weaponAsize = 3;
         g2d.fillRect((snakeHead.x + boxOffsetX -1) * tileSize + cameraOffsetX , (snakeHead.y + boxOffsetY-1) * tileSize + cameraOffsetY, weaponAsize * tileSize, weaponAsize * tileSize);
-        
+//        ColoredRec coloredRectangle = new ColoredRec((snakeHead.x + boxOffsetX -1)* tileSize,(snakeHead.y + boxOffsetY-1)*tileSize ,  3, 3, Color.WHITE);
+//        coloredRectangles.addFirst(coloredRectangle);
         bulletStartPosX = snakeHead.x * tileSize + cameraOffsetX;
         bulletStartPosY = snakeHead.y * tileSize + cameraOffsetY;
         isShooting = false;
@@ -149,9 +128,44 @@ public class WeaponA {
         }
         
     }
-    public void setRedOpacity(float opacity) {
-        redOpacity = Math.max(0.0f, Math.min(1.0f, opacity));
+    
+    private boolean isWithin3x3Area(Point enemyHead,Point snakeHead) {
+        int weaopnAboxSize = 3;
+//        int AboxHeight = AboxX + weaopnAboxSize;
+//        int AboxWidth = AboxY + weaopnAboxSize;
+        return enemyHead.x >= (snakeHead.x + boxOffsetX -1) * tileSize && enemyHead.x < (snakeHead.x + boxOffsetX -1) * tileSize + weaopnAboxSize*tileSize  && enemyHead.y >= (snakeHead.y + boxOffsetY-1) * tileSize  && enemyHead.y < (snakeHead.y + boxOffsetY-1) * tileSize + weaopnAboxSize * tileSize ;
+ 
+        
     }
+    public void killIn3x3(Point snakeHead) {
+    ArrayList<Enemy> modEnemies = new ArrayList<>();
+    for (int i = 0; i < enemies.size(); i++) {
+        Enemy enemyIndex = enemies.get(i);
+        Point enemyHead = enemyIndex.getEnemyHead();
+        if (isWithin3x3Area(enemyHead,snakeHead)) {
+            enemies.remove(i);
+            modEnemies.add(enemyIndex);
+           // i--;
+        } else {
+            LinkedList<Point> enemyPath = enemyIndex.getEnemyPath();
+            for (int j = 0; j < enemyPath.size(); j++) {
+                Point pathPoint = enemyPath.get(j);
+                if (isWithin3x3Area(pathPoint,snakeHead)) {
+                    enemies.remove(j);
+                    modEnemies.add(enemyIndex);
+                    break;
+                }
+            }
+        }
+    }
+    enemies.removeAll(modEnemies);
+    for (Enemy enemyToRemove : modEnemies) {
+        enemyToRemove.removeEnemy();
+//        ColoredRec coloredRectangle = new ColoredRec((snakeHead.x + boxOffsetX -1) * tileSize ,(snakeHead.y + boxOffsetY -1) * tileSize ,3,3,Color.WHITE);
+//        coloredRectangles.add(coloredRectangle);
+    }
+    
+}
 
 }
 
