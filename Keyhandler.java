@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 
 public class Keyhandler implements KeyListener {
     public boolean up, left, down, right , enter ;
-    public String lastDirection;
+    public String lastDirection = "RIGHT";
 
     @Override
     public void keyTyped(KeyEvent e) {

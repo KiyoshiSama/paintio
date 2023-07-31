@@ -1,11 +1,13 @@
 
 package paintio.paintio;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 
 public class WeaponA {
     private int ammo;
@@ -13,15 +15,27 @@ public class WeaponA {
     private Enemy enemy;
     private ArrayList<Enemy> enemies;
     private Keyhandler keyIn;
+    private String lastSnakeDirection;
+    private int bulletStartPosX;
+    private int bulletStartPosY ;
+    private float redOpacity;//Initial opacity value
+
 
 
     public WeaponA(ArrayList<Enemy> enemies) {
         ammo = 5;
         isShooting = false;
         this.enemies = enemies;
-                keyIn = new Keyhandler();
+        keyIn = new Keyhandler();
+        redOpacity =0.5f ;
+        
+    
 
     }
+    public void setLastSnakeDirection(String lastSnakeDirection) {
+    this.lastSnakeDirection = lastSnakeDirection;
+}
+
 
     public boolean isShooting() {
         return isShooting;
@@ -81,7 +95,66 @@ public class WeaponA {
         }
     }
 }
+    public void weaponAdraw(Graphics2D g2d,Point snakeHead,int tileSize,int cameraOffsetX,int cameraOffsetY){
+        
+
+    if (lastSnakeDirection != null) {
+        int boxOffsetX = 0;
+        int boxOffsetY = 0;
+  
+        switch (lastSnakeDirection) {
+            case "UP":
+                boxOffsetY = -5;
+                break;
+            case "DOWN":
+                boxOffsetY = 5;
+                break;
+            case "LEFT":
+                boxOffsetX = -5;
+                break;
+            case "RIGHT":
+                boxOffsetX = +5;
+                break;
+        }
+
+        // Draw the 3x3 box
+        g2d.setColor(Color.WHITE);
+        int weaponAsize = 3;
+        g2d.fillRect((snakeHead.x + boxOffsetX -1) * tileSize + cameraOffsetX , (snakeHead.y + boxOffsetY-1) * tileSize + cameraOffsetY, weaponAsize * tileSize, weaponAsize * tileSize);
+        
+        bulletStartPosX = snakeHead.x * tileSize + cameraOffsetX;
+        bulletStartPosY = snakeHead.y * tileSize + cameraOffsetY;
+        isShooting = false;
+
+
+    }
+    }
+    public void drawBulletTrail(Graphics2D g2d,int tileSize) {
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, redOpacity));
+            g2d.setColor(new Color(1.0f, 0.0f, 0.0f, redOpacity)); // Set the color with alpha value
+
+            switch (lastSnakeDirection) {
+            case "UP":
+                g2d.fillRect(bulletStartPosX, bulletStartPosY-(3*tileSize), tileSize, 4*tileSize);
+                break;
+            case "DOWN":
+                g2d.fillRect(bulletStartPosX, bulletStartPosY , tileSize, 4*tileSize);
+                break;
+            case "LEFT":
+                g2d.fillRect(bulletStartPosX-(3*tileSize), bulletStartPosY, 4*tileSize, tileSize);
+                break;
+            case "RIGHT":
+                g2d.fillRect(bulletStartPosX, bulletStartPosY, 4*tileSize, tileSize);
+                break;
+        }
+        
+    }
+    public void setRedOpacity(float opacity) {
+        redOpacity = Math.max(0.0f, Math.min(1.0f, opacity));
+    }
 
 }
+
+
 
 

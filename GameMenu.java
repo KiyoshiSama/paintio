@@ -92,6 +92,7 @@ public class GameMenu extends javax.swing.JFrame {
         enemyCount.setPaintTicks(true);
         enemyCount.setSnapToTicks(true);
         enemyCount.setToolTipText("");
+        enemyCount.setValue(1);
         enemyCount.setOpaque(false);
         enemyCount.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -194,6 +195,7 @@ public class GameMenu extends javax.swing.JFrame {
     private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
         String speedS = GameSpeed.getSelectedItem().toString();
         if ("SPEED:".equals(speedS))speedN = 10;
+        if (enemyCount.getValue() == 1)enemyNum=1;
         setVisible(false);
        InputSelect inputFrame = new InputSelect(this);
        inputFrame.setVisible(true);

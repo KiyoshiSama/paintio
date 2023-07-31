@@ -140,33 +140,12 @@ public void paintComponent(Graphics g) {
     }
     
     if (weapon.isShooting()) {
-    String direction = keyIn.getLastDirection();
+    weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
+    weapon.drawBulletTrail(g2d,tileSize);
 
-    if (direction != null) {
-        int boxOffsetX = 0;
-        int boxOffsetY = 0;
-
-        switch (direction) {
-            case "UP":
-                boxOffsetY = -5;
-                break;
-            case "DOWN":
-                boxOffsetY = 5;
-                break;
-            case "LEFT":
-                boxOffsetX = -5;
-                break;
-            case "RIGHT":
-                boxOffsetX = 5;
-                break;
-        }
-
-        // Draw the 3x3 box
-        g2d.setColor(Color.WHITE);
-        int weaponAboxS = 3;
-        g2d.fillRect((snakeHead.x + boxOffsetX) * tileSize + cameraOffsetX , (snakeHead.y + boxOffsetY) * tileSize + cameraOffsetY, weaponAboxS * tileSize, weaponAboxS * tileSize);
     }
-}
+    
+    
 
     // Draw the snake
     for (Point segment : snake) {
@@ -246,21 +225,11 @@ public void paintComponent(Graphics g) {
         nextY = snake.getFirst().y;
         
         if (useKeyboardControls){
-        if (keyIn.left) {
-            nextX--;
-        } else if (keyIn.right) {
-            nextX++;
-        } else if (keyIn.up) {
-            nextY--;
-        } else if (keyIn.down) {
-            nextY++;
-        }
         String direction = keyIn.getLastDirection();
-        if (keyIn.enter){
-        weapon.shoot();
+        weapon.setLastSnakeDirection(direction); // Set the last direction in the WeaponA class
 
         if(direction != null){
-       switch (direction) {
+            switch (direction) {
             case "UP":
                 nextY--;
                 break;
@@ -276,7 +245,10 @@ public void paintComponent(Graphics g) {
         }
 
 
-        }     
+        }
+        if (keyIn.enter){
+        weapon.shoot();
+        keyIn.enter = false;
         }
         }
          if (useMouseControls) {
@@ -492,4 +464,5 @@ private void checkEnemyCollisions() {
 //avoid enemies to spawn on each other
 //if the new direction in the enemy clas != with previous, do it again
 // create a winner screen
+//adding a delay beetween guntrail and box creating
 }
