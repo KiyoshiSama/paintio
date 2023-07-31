@@ -21,13 +21,13 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
     private ImageIcon gameOverImg;
-    private WeaponA weapon; // Add this variable to hold the weapon object
+    private WeaponA weapon;
+    private WeaponB weapon2;
     private ArrayList<Enemy> enemies;    
     private int originalTileSize = 16;
     private int scale = 3;
     private int tileSize = originalTileSize * scale;
-    private boolean gameOver; // Flag to indicate if the game is over
-    //private JButton restartButton;
+    private boolean gameOver;
     private boolean isOutsideBox;
     private int nextX;
     private int nextY;
@@ -82,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
         enemies.add(new Enemy(EboxX, EboxY));
         }
         weapon = new WeaponA(enemies,coloredRectangles);
+        weapon2 = new WeaponB(enemies);
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         isOutsideBox = false;
         mouseIn = new Clickhandler();
@@ -233,6 +234,9 @@ public class GamePanel extends JPanel implements Runnable {
         weapon.shoot();
         keyIn.enter = false;
         }
+        if(keyIn.space){
+        weapon2.shoot(snakeHead, direction);
+        }
         }
          if (useMouseControls) {
              String direction = keyIn.getLastDirection();
@@ -258,6 +262,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
             
         }
+         }
         snakeHead = new Point(nextX, nextY);   
          
          cameraOffsetX = -nextX * tileSize + getWidth() / 2;
@@ -307,7 +312,6 @@ public class GamePanel extends JPanel implements Runnable {
        if (enemies.isEmpty()){
        gameOver = true;
        }
-    }
     }
 
 
@@ -460,4 +464,6 @@ private void checkEnemyCollisions() {
 //add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
 //replace prevrects with .contains
 ////add to readme: we dont have 189 degree rotation at this game
+//showing ammo counts
+//mouse movement doesn't work
 }

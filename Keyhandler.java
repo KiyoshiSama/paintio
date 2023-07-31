@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keyhandler implements KeyListener {
-    public boolean up, left, down, right , enter ;
+    public boolean up, left, down, right , enter,space ;
     public String lastDirection = "RIGHT";
 
     @Override
@@ -42,6 +42,7 @@ public class Keyhandler implements KeyListener {
                 break;
         }
         if (code == KeyEvent.VK_ENTER )enter = true;
+        if (code == KeyEvent.VK_ENTER )space = true;
 
     }
     public String getLastDirection() {

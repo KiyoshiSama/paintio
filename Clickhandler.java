@@ -52,9 +52,7 @@ public class Clickhandler extends MouseAdapter {
         down = false;
         left = false;
         right = false;
-        rightClick = false;
-         if (SwingUtilities.isLeftMouseButton(e)) {
-           
+        rightClick = false; 
         
         if (arrowUpRect.contains(mousePoint)) {
             up = true;
@@ -73,7 +71,13 @@ public class Clickhandler extends MouseAdapter {
                     rightClick = true;
 
         }
-        }
+        else{
+        up = false;
+        down = false;
+        left = false;
+        right = false;
+        rightClick = false; }
+        
          
     }
     public String getLastDirection() {

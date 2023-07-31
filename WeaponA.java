@@ -99,6 +99,8 @@ public class WeaponA {
         bulletStartPosY = snakeHead.y * tileSize + cameraOffsetY;
         isShooting = false;
         drawBulletTrail(g2d, tileSize);
+          g2d.setColor(Color.WHITE);
+    
 
     }
     }
