@@ -42,7 +42,7 @@ public class Keyhandler implements KeyListener {
                 break;
         }
         if (code == KeyEvent.VK_ENTER )enter = true;
-        if (code == KeyEvent.VK_ENTER )space = true;
+        if (code == KeyEvent.VK_SPACE )space = true;
 
     }
     public String getLastDirection() {

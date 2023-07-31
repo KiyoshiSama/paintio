@@ -13,7 +13,6 @@ import java.util.TimerTask;
 
 public class WeaponB {
     private boolean isShooting;
-    private int tileSize;
     private LinkedList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
     private Timer rechargeTimer;
@@ -26,7 +25,6 @@ public class WeaponB {
     public WeaponB(ArrayList<Enemy> enemies) {
         isShooting = false;
         this.enemies = enemies;
-        tileSize = 48;
         bullets = new LinkedList<>();
         rechargeInterval = 3000; // 3 seconds
         canShoot = true;
@@ -49,8 +47,8 @@ public class WeaponB {
         }
     }
 
-    public void weaponAdraw(Graphics2D g2d, int cameraOffsetX, int cameraOffsetY) {
-        g2d.setColor(Color.BLACK);
+    public void weaponBdraw(Graphics2D g2d,int tileSize, int cameraOffsetX, int cameraOffsetY) {
+        g2d.setColor(Color.BLUE);
         ArrayList<Bullet> bulletsToRemove = new ArrayList<>();
 
         for (Bullet bullet : bullets) {

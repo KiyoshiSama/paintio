@@ -130,6 +130,9 @@ public class GamePanel extends JPanel implements Runnable {
     weapon.killIn3x3(snakeHead);
 
     }
+    if (weapon2.isShooting()) {
+        weapon2.weaponBdraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
+    }
     // Draw the colored rectangles from the coloredRectangles list
     for (ColoredRec coloredRectangle : coloredRectangles) {
         int x = coloredRectangle.getX();
@@ -236,6 +239,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         if(keyIn.space){
         weapon2.shoot(snakeHead, direction);
+        keyIn.space = false;
         }
         }
          if (useMouseControls) {
