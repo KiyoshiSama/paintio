@@ -16,21 +16,20 @@ public class WeaponB {
     private LinkedList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
     private Timer rechargeTimer;
-    private long rechargeInterval; // Time in milliseconds for recharging
     private boolean canShoot;
     private int bulletSize;
     private int bulletSpeed;
-    private int maxBulletDistance; // Maximum distance a bullet can travel before being removed
+    private int maxBulletDistance;
+    private final long rechargeTime = 3000; 
 
     public WeaponB(ArrayList<Enemy> enemies) {
         isShooting = false;
         this.enemies = enemies;
         bullets = new LinkedList<>();
-        rechargeInterval = 3000; // 3 seconds
         canShoot = true;
         bulletSize = 3;
         bulletSpeed = 5;
-        maxBulletDistance = 1000; // Adjust this value as needed
+        maxBulletDistance = 1000; 
     }
 
     public boolean isShooting() {
@@ -42,8 +41,9 @@ public class WeaponB {
             isShooting = true;
             Bullet bullet = new Bullet(snakeHead, lastSnakeDirection);
             bullets.add(bullet);
+            canShoot = false;
             rechargeTimer = new Timer();
-            rechargeTimer.schedule(new RechargeTask(), rechargeInterval);
+            rechargeTimer.schedule(new RechargeTask(), rechargeTime);
         }
     }
 
@@ -87,12 +87,12 @@ public class WeaponB {
 
     private class RechargeTask extends TimerTask {
         @Override
-        public void run() {
-            canShoot = true;
-            isShooting = false;
+       public void run() {
+            canShoot = true; // Recharge is over, enable shooting again
             rechargeTimer.cancel();
             rechargeTimer.purge();
         }
+        
     }
 
     private static class Bullet {
