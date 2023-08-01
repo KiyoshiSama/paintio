@@ -125,16 +125,16 @@ public class WeaponA {
         
     }
     
-    private boolean isWithin3x3Area(Point enemyHead,LinkedList<Point> enemyPath) {
+    private boolean isWithin3x3Area(Point enemyHead,Point pathPoint, LinkedList<Point> pathPoints) {
          Abox = new Rectangle(newBoxX * tileSize ,newBoxY * tileSize , weaponAsize * tileSize, weaponAsize * tileSize);
          if (Abox.contains(enemyHead)) {
         return true;
     }
-
-    for (Point pathPoint : enemyPath) {
-        
-        if (Abox.contains(pathPoint)) {
-            return true;
+         if (pathPoint != null){
+        for (Point PP : pathPoints) {
+            if (Abox.contains(pathPoint)) {
+                return true;
+            }
         }
     }
 
@@ -144,16 +144,17 @@ public class WeaponA {
     public void killIn3x3(Point snakeHead) {
     ArrayList<Enemy> modEnemies = new ArrayList<>();
     for (int i = 0; i < enemies.size(); i++) {
+        Point pathPoint = null ;
         Enemy enemyIndex = enemies.get(i);
         Point enemyHead = enemyIndex.getEnemyHead();
-        LinkedList<Point> enemyPath = enemyIndex.getEnemyPath();
-        if (isWithin3x3Area(enemyHead, enemyPath)) {
+        LinkedList<Point> pathPoints = enemyIndex.getEnemyPath();
+        if (isWithin3x3Area(enemyHead, pathPoint, pathPoints)) {
             enemies.remove(i);
             modEnemies.add(enemyIndex);
         } else {
-            for (int j = 0; j < enemyPath.size(); j++) {
-                Point pathPoint = enemyPath.get(j);
-                if (isWithin3x3Area(pathPoint, enemyPath)) {
+            for (int j = 0; j < pathPoints.size(); j++) {
+                pathPoint = pathPoints.get(j);
+                if (isWithin3x3Area(enemyHead, pathPoint, pathPoints)) {
                     enemies.remove(i);
                     modEnemies.add(enemyIndex);
                     break;

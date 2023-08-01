@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+import java.awt.AlphaComposite;
+
 
 public class Enemy {
     

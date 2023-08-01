@@ -264,7 +264,10 @@ public class GamePanel extends JPanel implements Runnable {
         weapon.shoot();
         mouseIn.rightClick = false;
         }
-            
+        if(mouseIn.leftClick){
+        weapon2.shoot(snakeHead, direction);
+        mouseIn.leftClick = false;
+        }   
         }
          }
         snakeHead = new Point(nextX, nextY);   
@@ -496,9 +499,7 @@ private void checkEnemyCollisions() {
 
 
  //add color select for snake
-//choose player color in menu
 //snake and enemies paint over each other
-//avoid enemies to spawn on each other
 //if the new direction in the enemy clas != with previous, do it again
 // create a winner screen
 //adding a delay beetween guntrail and box creating
@@ -509,4 +510,5 @@ private void checkEnemyCollisions() {
 ////add to readme: we dont have 189 degree rotation at this game
 //showing ammo counts
 //mouse movement doesn't work
+//add to readme : key hints
 }
