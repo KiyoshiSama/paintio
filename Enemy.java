@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+import java.awt.AlphaComposite;
+
 
 public class Enemy {
     
@@ -33,12 +35,7 @@ public class Enemy {
     private Color enemyColor;
     private Color enemyHcolor;
     
-    public LinkedList<Point> getEnemyPath() {
-        return path;
-    }
-    public Point getEnemyHead(){
-    return EsnakeHead;
-    }
+
 
     public Enemy(int boxX, int boxY) {
         this.boxX = boxX;
@@ -55,6 +52,12 @@ public class Enemy {
         enemyColor = enemyColors[0];
         enemyHcolor = enemyColors[1];
         Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
+    }
+        public LinkedList<Point> getEnemyPath() {
+        return path;
+    }
+    public Point getEnemyHead(){
+    return Esnake.getFirst();
     }
 
     public void enemyDraw(Graphics2D g2d, int tileSize, int cameraOffsetX, int cameraOffsetY) {

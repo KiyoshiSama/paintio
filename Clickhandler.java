@@ -24,8 +24,7 @@ public class Clickhandler extends MouseAdapter {
     private ImageIcon arrowDownImage;
     private ImageIcon arrowLeftImage;
     private ImageIcon arrowRightImage;
-    public boolean rightClick;
-    private WeaponA weapon;
+    public boolean rightClick,leftClick;
     public String lastDirection = "RIGHT";
 
 
@@ -47,13 +46,15 @@ public class Clickhandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         Point mousePoint = e.getPoint();
-        
+        int click = e.getButton();
+        //int MouseEvent.BUTTON3
+       // e.MouseEvent
         up = false;
         down = false;
         left = false;
         right = false;
         rightClick = false; 
-        
+        leftClick = false;
         if (arrowUpRect.contains(mousePoint)) {
             up = true;
             lastDirection = "UP";
@@ -67,16 +68,20 @@ public class Clickhandler extends MouseAdapter {
             right = true; 
             lastDirection = "RIGHT";
         }
-        else if (SwingUtilities.isRightMouseButton(e)) {
+        else if (click == MouseEvent.BUTTON3) {
                     rightClick = true;
-
+        }
+        else if (click == MouseEvent.BUTTON1) {
+                    leftClick = true;
         }
         else{
         up = false;
         down = false;
         left = false;
         right = false;
-        rightClick = false; }
+        rightClick = false;
+        leftClick = false;
+        }
         
          
     }

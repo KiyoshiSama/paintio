@@ -29,7 +29,11 @@ public class WeaponB {
         canShoot = true;
         bulletSize = 3;
         bulletSpeed = 5;
+<<<<<<< HEAD
         maxBulletDistance = 1000; 
+=======
+        maxBulletDistance = 1000;
+>>>>>>> f1bf66361db3a78cae8e7f59928bac03aa30ae85
     }
 
     public boolean isShooting() {
@@ -87,7 +91,11 @@ public class WeaponB {
 
     private class RechargeTask extends TimerTask {
         @Override
+<<<<<<< HEAD
        public void run() {
+=======
+        public void run() {
+>>>>>>> f1bf66361db3a78cae8e7f59928bac03aa30ae85
             canShoot = true; // Recharge is over, enable shooting again
             rechargeTimer.cancel();
             rechargeTimer.purge();
