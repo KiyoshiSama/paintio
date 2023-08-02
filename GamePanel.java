@@ -32,8 +32,6 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean isOutsideBox;
     private int nextX;
     private int nextY;
-//    private int EboxX;
-//    private int EboxY;
     private int enemyNumber;
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
@@ -127,7 +125,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     if (weapon.isShooting()) {
     weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
-    weapon.killIn3x3(snakeHead);
+    weapon.killIn3x3();
 
     }
     if (weapon2.isShooting()) {
@@ -298,6 +296,15 @@ public class GamePanel extends JPanel implements Runnable {
         for (Enemy enemyNum : enemies) {
         enemyNum.enemyUpdate();
     }
+        
+         for (int i =0 ; i < enemies.size() ; i++){
+         Enemy enemyIndex = enemies.get(i);
+         if (snakeHead.equals(enemyIndex.getEnemyHead())){
+         gameOver=true;
+         return;
+         }
+         }
+         
          for (int i =0 ; i < enemies.size() ; i++) {
              Enemy enemyIndex = enemies.get(i);
              if (enemyIndex.getEnemyPath().contains(snakeHead)){
@@ -307,6 +314,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
     }
+         
        for (int i =0 ; i < enemies.size() ; i++) {
              Enemy enemyIndex = enemies.get(i);
              if (path.contains(enemyIndex.getEnemyHead())){
@@ -421,10 +429,11 @@ public void generateEnemy() {
 
     if (!isFirstEnemyAdded) {
         while (true){
-        EboxX = (int) (Math.random() * 50);
+        EboxX = (int) (Math.random() * 60);
         EboxY = (int) (Math.random() * 50);
-        if (!(EboxX > 4 && EboxX < 15 && EboxY >4 && EboxY <15)){
-        break;
+        int distance = (int) Math.sqrt((EboxX- boxX) * (EboxX - boxX) + (EboxY - boxY) * (EboxY - boxY));
+        if (distance>30) {
+            break;
         }
         }
         enemies.add(new Enemy(EboxX, EboxY));
@@ -432,9 +441,9 @@ public void generateEnemy() {
         
     } else {
         while (true) {
-            EboxX = (int) (Math.random() * 60);
-            EboxY = (int) (Math.random() * 60);
-            if (isPositionFarFromOthers(EboxX, EboxY, 15)) {
+            EboxX = (int) (Math.random() * 70);
+            EboxY = (int) (Math.random() * 70);
+            if (isPositionFarFromOthers(EboxX, EboxY)) {
                 break;
             }
         }
@@ -444,35 +453,20 @@ public void generateEnemy() {
 }
 
 
- private boolean isPositionFarFromOthers(int x, int y, float minDistance) {
+ private boolean isPositionFarFromOthers(int x, int y) {
      
     for (int i = 0 ; i < enemyNumber+1 ;i++) {
         Enemy currentEnemy = enemies.get(i);
         Point enemyHead = currentEnemy.getEnemyHead();
-        int distance = (int) Math.sqrt((x - enemyHead.x) * (x - enemyHead.x) + (y - enemyHead.y) * (y - enemyHead.y));
-        if (distance < minDistance) {
+        int oldDistance = (int) Math.sqrt((x- boxX) * (x - boxX) + (y - boxY) * (y - boxY));
+        int newDistance = (int) Math.sqrt((x - enemyHead.x) * (x - enemyHead.x) + (y - enemyHead.y) * (y - enemyHead.y));
+        if (newDistance < 20 && oldDistance < 30) {
             return false;
         }
     }
     return true;
 }
-//        private boolean isPositionOccupied(int EboxX, int EboxY) {
-//        Rectangle enemyRect1 = new Rectangle(EboxX * tileSize, EboxY * tileSize, boxSize*tileSize, boxSize*tileSize);
-//        if (enemyRect1.intersects(box)) {
-//            return true;
-//        }
-//        if (enemySpawned>1){
-//        for (int i = 0 ; i <enemies.size();i++) {
-//            Point prevEnemyHead = enemies.get(i).getEnemyHead();
-//            Rectangle enemyRect2 = new Rectangle(prevEnemyHead.x-1 * tileSize, prevEnemyHead.y-1 * tileSize, tileSize*boxSize, tileSize*boxSize);
-//            if (enemyRect2.intersects(enemyRect1)) {
-//                return true;
-//            }
-//        }
-//        }
-//    
-//    return false;
-//}
+
 
 private void checkEnemyCollisions() {
     for (int i = 0; i < enemies.size(); i++) {
@@ -482,20 +476,12 @@ private void checkEnemyCollisions() {
             Enemy enemy2 = enemies.get(j);
             if (enemy2.getEnemyPath().contains(enemy1H)) {
                 enemies.remove(j);
-                enemy2.removeEnemy(); // Clear enemy's path and reset its position
-                j--; // Decrement j as the enemies list size is reduced
+                enemy2.removeEnemy(); 
+                j--; 
             }
         }
     }
 }
-
-
-
-// public void spawnNewEnemies(int enemtCount) {
-//    for (int i = 0; i < numberOfNewEnemies; i++) {
-//        enemies.add(new Enemy(/*Optional parameters for position and speed*/));
-//    }
-//}
 
 
  //add color select for snake
@@ -511,4 +497,7 @@ private void checkEnemyCollisions() {
 //showing ammo counts
 //mouse movement doesn't work
 //add to readme : key hints
+//arrows for mouse movements doesn't work
+//adding texture
+//changing the movement algorithm
 }
