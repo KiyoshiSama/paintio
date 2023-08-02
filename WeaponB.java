@@ -20,20 +20,18 @@ public class WeaponB {
     private int bulletSize;
     private int bulletSpeed;
     private int maxBulletDistance;
-    private final long rechargeTime = 3000; 
+    private final long rechargeTime = 500; 
+    private Point snakeHead;
 
     public WeaponB(ArrayList<Enemy> enemies) {
         isShooting = false;
         this.enemies = enemies;
+
         bullets = new LinkedList<>();
         canShoot = true;
         bulletSize = 3;
         bulletSpeed = 5;
-<<<<<<< HEAD
         maxBulletDistance = 1000; 
-=======
-        maxBulletDistance = 1000;
->>>>>>> f1bf66361db3a78cae8e7f59928bac03aa30ae85
     }
 
     public boolean isShooting() {
@@ -43,7 +41,7 @@ public class WeaponB {
     public void shoot(Point snakeHead, String lastSnakeDirection) {
         if (canShoot) {
             isShooting = true;
-            Bullet bullet = new Bullet(snakeHead, lastSnakeDirection);
+            Bullet bullet = new Bullet(new Point(snakeHead), lastSnakeDirection);
             bullets.add(bullet);
             canShoot = false;
             rechargeTimer = new Timer();
@@ -58,9 +56,7 @@ public class WeaponB {
         for (Bullet bullet : bullets) {
             bullet.move(bulletSpeed);
 
-            int x = bullet.getX() * tileSize + cameraOffsetX;
-            int y = bullet.getY() * tileSize + cameraOffsetY;
-            g2d.fillRect(x, y, tileSize, tileSize);
+            g2d.fillRect(bullet.getX() * tileSize + cameraOffsetX, bullet.getY() * tileSize + cameraOffsetY, tileSize, tileSize);
 
             if (bullet.getDistance() > maxBulletDistance) {
                 bulletsToRemove.add(bullet);
@@ -76,26 +72,26 @@ public class WeaponB {
     }
 
     private boolean checkForEnemyCollisions(Bullet bullet) {
-        boolean hitEnemy = false;
+    boolean hitEnemy = false;
 
-        for (Enemy enemy : enemies) {
-            if (enemy.getEnemyHead().equals(bullet.getPosition())) {
-                hitEnemy = true;
-                enemy.removeEnemy();
-                break;
-            }
+    for (int i = 0; i < enemies.size(); i++) {
+        Enemy enemy = enemies.get(i);
+        Point enemyHead = enemy.getEnemyHead();
+
+        if (enemyHead.x == bullet.getX() && enemyHead.y == bullet.getY()) {
+            hitEnemy = true;
+            enemies.remove(i);
+            break;
         }
-
-        return hitEnemy;
     }
+
+    return hitEnemy;
+}
+
 
     private class RechargeTask extends TimerTask {
         @Override
-<<<<<<< HEAD
-       public void run() {
-=======
         public void run() {
->>>>>>> f1bf66361db3a78cae8e7f59928bac03aa30ae85
             canShoot = true; // Recharge is over, enable shooting again
             rechargeTimer.cancel();
             rechargeTimer.purge();
@@ -133,16 +129,17 @@ public class WeaponB {
         public void move(int speed) {
             switch (direction) {
                 case "UP":
-                    position.translate(0, -speed);
+                    position.y -= speed;
                     break;
                 case "DOWN":
-                    position.translate(0, speed);
+                    position.y += speed;
                     break;
                 case "LEFT":
-                    position.translate(-speed, 0);
+                    position.x -= speed;
                     break;
                 case "RIGHT":
-                    position.translate(speed, 0);
+                   position.x += speed;
+                   
                     break;
             }
             distance += speed;
