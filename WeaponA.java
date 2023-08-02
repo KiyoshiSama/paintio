@@ -13,9 +13,7 @@ import java.util.LinkedList;
 public class WeaponA {
     private int ammo;
     private boolean isShooting;
-    private int tileSize;
     private ArrayList<Enemy> enemies;
-    private Keyhandler keyIn;
     private String lastSnakeDirection= "RIGHT";
     private int bulletStartPosX;
     private int bulletStartPosY ;
@@ -28,12 +26,10 @@ public class WeaponA {
     private int newBoxX;
     private int newBoxY;
 
-    public WeaponA(ArrayList<Enemy> enemies,LinkedList<ColoredRec> coloredRectangles) {
-        ammo = 5;
+    public WeaponA(ArrayList<Enemy> enemies,LinkedList<ColoredRec> coloredRectangles,int weaponAammo) {
+        ammo = weaponAammo;
         isShooting = false;
         this.enemies = enemies;
-        keyIn = new Keyhandler();
-        tileSize = 48;
         weaponAsize =3;
         redOpacity =0.5f ;
         this.coloredRectangles = coloredRectangles;

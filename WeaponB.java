@@ -20,12 +20,12 @@ public class WeaponB {
     private int bulletSize;
     private int bulletSpeed;
     private int maxBulletDistance;
-    private final long rechargeTime = 3000; 
+    private final long rechargeTime; 
 
-    public WeaponB(ArrayList<Enemy> enemies) {
+    public WeaponB(ArrayList<Enemy> enemies, int weaponBrecharge) {
         isShooting = false;
         this.enemies = enemies;
-
+        rechargeTime = weaponBrecharge;
         bullets = new LinkedList<>();
         canShoot = true;
         bulletSize = 1;

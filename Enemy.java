@@ -36,16 +36,17 @@ public class Enemy {
     private Color enemyHcolor;
     private Timer directionTimer;
     private boolean canChangeMove;
-    private final long rechargeTime = 100; 
+    private long rechargeTime; 
 
     
 
 
-    public Enemy(int boxX, int boxY) {
+    public Enemy(int boxX, int boxY,int enemiesSpeed) {
         this.boxX = boxX;
         this.boxY= boxY;
         canChangeMove = true;
         Esnake = new LinkedList<>();
+        rechargeTime = enemiesSpeed;
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         pathColors = new LinkedList<>();

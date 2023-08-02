@@ -6,6 +6,9 @@ public class GameMenu extends javax.swing.JFrame {
 
     public int speedN;
     public int enemyNum;
+    public int weaponAammo;
+    public int weaponBrecharge;
+    public int enemiesSpeed;
     public GameMenu() {
         initComponents();
     }
@@ -75,7 +78,7 @@ public class GameMenu extends javax.swing.JFrame {
 
         GameDiff.setBackground(new java.awt.Color(255, 153, 102));
         GameDiff.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
-        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DIFFICULITY:", "EASY", "NORMAL", "HARD" }));
+        GameDiff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DIFFICULITY:(Makes ammo use and movement harder)", "EASY", "NORMAL", "HARD" }));
         GameDiff.setToolTipText("");
         GameDiff.setBorder(null);
         GameDiff.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
@@ -112,8 +115,8 @@ public class GameMenu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(197, 197, 197)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(GameSpeed, 0, 435, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .addComponent(GameSpeed, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
                             .addComponent(StartBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -121,7 +124,7 @@ public class GameMenu extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(enemyCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,25 +179,37 @@ public class GameMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_GameSpeedActionPerformed
 
     private void GameDiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameDiffActionPerformed
-      /*   String diffS = GameDiff.getSelectedItem().toString();
+        String diffS = GameDiff.getSelectedItem().toString();
         switch (diffS) {
-            case "LOW":
-                speedN = 5;
+            case "EASY":
+                weaponAammo = 5;
+                weaponBrecharge = 3000;
+                enemiesSpeed = 110;
                 break;
-            case "MEDIUM":
-                speedN = 10;
+            case "NORMAL":
+                weaponAammo = 3;
+                weaponBrecharge = 5000;
+                enemiesSpeed = 50;
                 break;
-            case "HIGH":
-                speedN = 16;
+            case "HARD":
+                weaponAammo = 1;
+                weaponBrecharge =7000;
+                enemiesSpeed =20;
                 break;
             default:
                 break;
-        }     */ 
+        }     
     }//GEN-LAST:event_GameDiffActionPerformed
 
     private void StartButMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StartButMouseClicked
         String speedS = GameSpeed.getSelectedItem().toString();
         if ("SPEED:".equals(speedS))speedN = 10;
+        String Diff = GameDiff.getSelectedItem().toString();
+        if ("(Makes ammo use and movement harder)".equals(Diff)){
+        weaponAammo = 5;
+        weaponBrecharge = 3000;
+        enemiesSpeed = 300;
+        }
         if (enemyCount.getValue() == 1)enemyNum=1;
         setVisible(false);
        InputSelect inputFrame = new InputSelect(this);
@@ -221,6 +236,22 @@ public class GameMenu extends javax.swing.JFrame {
     public int getSpeed(){
     return speedN;
     }
+   
+    public int getWeaponAammo(){
+    return weaponAammo;
+    
+    }
+    
+    public int getWeaponBrecharge(){
+    return weaponBrecharge;
+    
+    }
+    public int getEnemiesSpeed(){
+    return enemiesSpeed;
+    
+    }
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -38,11 +38,13 @@ public class GamePanel extends JPanel implements Runnable {
     int maxY = Integer.MIN_VALUE;
     private int cameraOffsetX; 
     private int cameraOffsetY; 
-
-    int FPS  ; 
+    private int EboxX;
+    private int EboxY;
+    private int FPS  ; 
     private Keyhandler keyIn ;
     private Rectangle box ;
     private Point snakeHead;
+    private int enemiesSpeed;
 
     final int boxSize = 9; 
     final int boxX = 6; // X-coordinate of the box's top-left corner
@@ -60,23 +62,21 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-    public GamePanel(int speedN, int enemyCount) {
+    public GamePanel(int speedN, int enemyCount,int weaponAammo,int weaponBrecharge,int enemiesSpeed) {
 
 
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-
+        this.enemiesSpeed = enemiesSpeed;
         snake = new LinkedList<>();
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         enemies = new ArrayList<>(enemyCount);
         enemyNumber=0;
-//        for (int i = 0; i < enemyCount; i++) {
-//        generateEnemy();
-//        }
-        weapon = new WeaponA(enemies,coloredRectangles);
-        weapon2 = new WeaponB(enemies);
+       // enemy = new Enemy(EboxX,EboxY,enemiesSpeed);
+        weapon = new WeaponA(enemies,coloredRectangles,weaponAammo);
+        weapon2 = new WeaponB(enemies,weaponBrecharge);
         isOutsideBox = false;
         mouseIn = new Clickhandler();
         keyIn = new Keyhandler();
@@ -84,9 +84,7 @@ public class GamePanel extends JPanel implements Runnable {
         cameraOffsetX = 0;
         cameraOffsetY = 0;
         gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
-        
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-
         //make the snake move to the right direction initially
         keyIn.right = true; 
         mouseIn.right = true;
@@ -94,7 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseIn);
         this.addKeyListener(keyIn);
         setFocusable(true);
-              spawningEnemies(enemyCount);
+        spawningEnemies(enemyCount);
 
     }
 
@@ -420,7 +418,6 @@ private void spawningEnemies(int enemyCount) {
 
 
 public void generateEnemy() {
-    int EboxX, EboxY;
 
     if (!isFirstEnemyAdded) {
         while (true){
@@ -431,7 +428,7 @@ public void generateEnemy() {
             break;
         }
         }
-        enemies.add(new Enemy(EboxX, EboxY));
+        enemies.add(new Enemy(EboxX, EboxY,enemiesSpeed));
         isFirstEnemyAdded = true;
         
     } else {
@@ -443,7 +440,7 @@ public void generateEnemy() {
             }
         }
         enemyNumber++;
-        enemies.add(new Enemy(EboxX, EboxY));
+        enemies.add(new Enemy(EboxX, EboxY,enemiesSpeed));
     }
 }
 

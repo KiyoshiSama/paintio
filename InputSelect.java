@@ -9,7 +9,6 @@ public class InputSelect extends javax.swing.JFrame {
     public boolean inputSelected = false;
     
     private static GameMenu gameMenu;
-
     
     public InputSelect(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
@@ -116,17 +115,19 @@ public class InputSelect extends javax.swing.JFrame {
         useKeyboardControls = false;
        setVisible(false);
 
-                        // Now create and show the game frame with the chosen input mode
                         JFrame frame = new JFrame();
                         frame.setTitle("paint.io Game");
-                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frame.setResizable(true);
 
-                        int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
-                        int enemyNum = gameMenu.getEnemyCount(); // Get the speedN value from the GameMenu
-                        GamePanel gamePanel = new GamePanel(speedN,enemyNum);
+                        int speedN = gameMenu.getSpeed();
+                        int enemyNum = gameMenu.getEnemyCount();
+                        int weaponAammo = gameMenu.getWeaponAammo();
+                        int weaponBrecharge = gameMenu.getWeaponBrecharge();
+                        int enemiesSpeed = gameMenu.getEnemiesSpeed();
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed);
 
-                        // Set the chosen input mode in the GamePanel
+
                         gamePanel.setUseMouseControls(useMouseControls);
                         gamePanel.setUseKeyboardControls(useKeyboardControls);
 
@@ -144,15 +145,17 @@ public class InputSelect extends javax.swing.JFrame {
         useMouseControls = false;
         useKeyboardControls = true;
         setVisible(false);
-                        // Now create and show the game frame with the chosen input mode
                         JFrame frame = new JFrame();
                         frame.setTitle("paint.io Game");
-                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use DISPOSE_ON_CLOSE here
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frame.setResizable(true);
 
-                        int speedN = gameMenu.getSpeed(); // Get the speedN value from the GameMenu
-                        int enemyNum = gameMenu.getEnemyCount(); // Get the speedN value from the GameMenu
-                        GamePanel gamePanel = new GamePanel(speedN,enemyNum);
+                        int speedN = gameMenu.getSpeed();
+                        int enemyNum = gameMenu.getEnemyCount();
+                        int weaponAammo = gameMenu.getWeaponAammo();
+                        int weaponBrecharge = gameMenu.getWeaponBrecharge();
+                        int enemiesSpeed = gameMenu.getEnemiesSpeed();
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed);
 
 
                         // Set the chosen input mode in the GamePanel
