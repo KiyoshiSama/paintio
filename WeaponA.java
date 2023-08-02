@@ -126,7 +126,7 @@ public class WeaponA {
     }
     
     private boolean isWithin3x3Area(Point enemyHead,Point pathPoint, LinkedList<Point> pathPoints) {
-         Abox = new Rectangle(newBoxX * tileSize ,newBoxY * tileSize , weaponAsize * tileSize, weaponAsize * tileSize);
+         Abox = new Rectangle(newBoxX ,newBoxY  , weaponAsize, weaponAsize);
          if (Abox.contains(enemyHead)) {
         return true;
     }
@@ -141,7 +141,7 @@ public class WeaponA {
     return false;
 }
     
-    public void killIn3x3(Point snakeHead) {
+    public void killIn3x3() {
     ArrayList<Enemy> modEnemies = new ArrayList<>();
     for (int i = 0; i < enemies.size(); i++) {
         Point pathPoint = null ;
