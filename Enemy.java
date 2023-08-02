@@ -5,7 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
-import java.awt.AlphaComposite;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Enemy {
@@ -17,7 +18,6 @@ public class Enemy {
     private LinkedList<Point> path;
     private LinkedList<ColoredRec> coloredRectangles;
     private LinkedList<Color> pathColors; 
-    private LinkedList<LinkedList<Point>> previousPaths;
     private boolean isOutsideBox;
     boolean isValidMove;
     private int boxX;
@@ -34,19 +34,23 @@ public class Enemy {
     private Color[] enemyColors ;
     private Color enemyColor;
     private Color enemyHcolor;
+    private Timer directionTimer;
+    private boolean canChangeMove;
+    private final long rechargeTime = 100; 
+
     
 
 
     public Enemy(int boxX, int boxY) {
         this.boxX = boxX;
         this.boxY= boxY;
+        canChangeMove = true;
         Esnake = new LinkedList<>();
         path = new LinkedList<>();
         coloredRectangles = new LinkedList<>();
         pathColors = new LinkedList<>();
-        previousPaths = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
-        //generateEnemy();
+        directionTimer = new Timer();
         randomColor();
         enemyColors = randomColor();
         enemyColor = enemyColors[0];
@@ -58,6 +62,13 @@ public class Enemy {
     }
     public Point getEnemyHead(){
     return Esnake.getFirst();
+    }
+     private class DirectionChangeTask extends TimerTask {
+        @Override
+        public void run() {
+            canChangeMove = true;
+
+        }
     }
 
     public void enemyDraw(Graphics2D g2d, int tileSize, int cameraOffsetX, int cameraOffsetY) {
@@ -93,6 +104,7 @@ public class Enemy {
     }
 
         public void enemyUpdate() {
+            if(canChangeMove){
             nextX = Esnake.getFirst().x;
             nextY = Esnake.getFirst().y;
             isValidMove = false;
@@ -136,6 +148,11 @@ public class Enemy {
                  // Move the snake's head
                 Esnake.addFirst(new Point(nextX, nextY));
                 Esnake.removeLast();
+                            canChangeMove = false;
+                                    directionTimer.schedule(new DirectionChangeTask(), rechargeTime);
+
+            }
+
             }
         
         private boolean prevRects(Point point) {
@@ -234,11 +251,12 @@ public class Enemy {
     
     path.clear();
 }
-
+       
         public void removeEnemy() {
         Esnake.clear();
         path.clear();
         coloredRectangles.clear();
+        directionTimer.cancel();
 
     }
         

@@ -1,7 +1,6 @@
 package paintio.paintio;
 
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -37,10 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
     int minY = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
-   // public static final int TILE_SIZE = 20;
-   // public static final int WIDTH = 800;
-    //public static final int HEIGHT = 800;
-    //public static final int GAME_SPEED = 100;
     private int cameraOffsetX; 
     private int cameraOffsetY; 
 
@@ -429,7 +424,7 @@ public void generateEnemy() {
 
     if (!isFirstEnemyAdded) {
         while (true){
-        EboxX = (int) (Math.random() * 60);
+        EboxX = (int) (Math.random() * 50);
         EboxY = (int) (Math.random() * 50);
         int distance = (int) Math.sqrt((EboxX- boxX) * (EboxX - boxX) + (EboxY - boxY) * (EboxY - boxY));
         if (distance>30) {
@@ -441,8 +436,8 @@ public void generateEnemy() {
         
     } else {
         while (true) {
-            EboxX = (int) (Math.random() * 70);
-            EboxY = (int) (Math.random() * 70);
+            EboxX = (int) (Math.random() * 50);
+            EboxY = (int) (Math.random() * 50);
             if (isPositionFarFromOthers(EboxX, EboxY)) {
                 break;
             }
@@ -500,4 +495,5 @@ private void checkEnemyCollisions() {
 //arrows for mouse movements doesn't work
 //adding texture
 //changing the movement algorithm
+//add to readme: bullet size are 1 by default and it is hard to hit the enemies, if you want to check it works correctly, change ots value
 }

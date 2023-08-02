@@ -20,8 +20,7 @@ public class WeaponB {
     private int bulletSize;
     private int bulletSpeed;
     private int maxBulletDistance;
-    private final long rechargeTime = 500; 
-    private Point snakeHead;
+    private final long rechargeTime = 3000; 
 
     public WeaponB(ArrayList<Enemy> enemies) {
         isShooting = false;
@@ -29,8 +28,8 @@ public class WeaponB {
 
         bullets = new LinkedList<>();
         canShoot = true;
-        bulletSize = 3;
-        bulletSpeed = 5;
+        bulletSize = 1;
+        bulletSpeed = 2;
         maxBulletDistance = 1000; 
     }
 
@@ -56,7 +55,7 @@ public class WeaponB {
         for (Bullet bullet : bullets) {
             bullet.move(bulletSpeed);
 
-            g2d.fillRect(bullet.getX() * tileSize + cameraOffsetX, bullet.getY() * tileSize + cameraOffsetY, tileSize, tileSize);
+            g2d.fillRect(bullet.getX() * tileSize + cameraOffsetX, bullet.getY() * tileSize + cameraOffsetY, bulletSize *tileSize, bulletSize*tileSize);
 
             if (bullet.getDistance() > maxBulletDistance) {
                 bulletsToRemove.add(bullet);
@@ -73,12 +72,12 @@ public class WeaponB {
 
     private boolean checkForEnemyCollisions(Bullet bullet) {
     boolean hitEnemy = false;
-
+    Rectangle Bbox = new Rectangle(bullet.getX() ,bullet.getY(), bulletSize, bulletSize);
     for (int i = 0; i < enemies.size(); i++) {
         Enemy enemy = enemies.get(i);
         Point enemyHead = enemy.getEnemyHead();
 
-        if (enemyHead.x == bullet.getX() && enemyHead.y == bullet.getY()) {
+        if (Bbox.contains(enemyHead)) {
             hitEnemy = true;
             enemies.remove(i);
             break;
