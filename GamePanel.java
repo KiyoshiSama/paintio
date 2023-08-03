@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 
 
+
 public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Point> snake;
     private LinkedList<Point> path;
@@ -45,6 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
     private Rectangle box ;
     private Point snakeHead;
     private int enemiesSpeed;
+    private ImageIcon snakeHeadIcon;
+    private ImageIcon pathIcon;
+    private ImageIcon fillIcon;
 
     final int boxSize = 9; 
     final int boxX = 6; // X-coordinate of the box's top-left corner
@@ -62,10 +66,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-    public GamePanel(int speedN, int enemyCount,int weaponAammo,int weaponBrecharge,int enemiesSpeed) {
+    public GamePanel(int speedN, int enemyCount,int weaponAammo,int weaponBrecharge,int enemiesSpeed,String character) {
 
 
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.lightGray);
         this.setDoubleBuffered(true);
         this.enemiesSpeed = enemiesSpeed;
         snake = new LinkedList<>();
@@ -74,7 +78,6 @@ public class GamePanel extends JPanel implements Runnable {
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
         enemies = new ArrayList<>(enemyCount);
         enemyNumber=0;
-       // enemy = new Enemy(EboxX,EboxY,enemiesSpeed);
         weapon = new WeaponA(enemies,coloredRectangles,weaponAammo);
         weapon2 = new WeaponB(enemies,weaponBrecharge);
         isOutsideBox = false;
@@ -83,7 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
         FPS = speedN;
         cameraOffsetX = 0;
         cameraOffsetY = 0;
-        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg") {};
+        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg");
+        visualSelect(character);
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         //make the snake move to the right direction initially
         keyIn.right = true; 
@@ -112,9 +116,9 @@ public class GamePanel extends JPanel implements Runnable {
     // Draw the path
     for (int i = 0; i < path.size(); i++) {
         Point segment = path.get(i);
-        Color color = Color.WHITE;
-        g2d.setColor(color);
-        g2d.fillRect(segment.x * tileSize + cameraOffsetX, segment.y * tileSize + cameraOffsetY, tileSize, tileSize);
+        int x = segment.x * tileSize + cameraOffsetX;
+        int y =  segment.y * tileSize + cameraOffsetY;
+        pathIcon.paintIcon(this, g2d, x, y);
     }
     if (weapon.isShooting()) {
     weapon.weaponAdraw(g2d,snakeHead,tileSize,cameraOffsetX,cameraOffsetY);
@@ -126,25 +130,31 @@ public class GamePanel extends JPanel implements Runnable {
     }
     // Draw the colored rectangles from the coloredRectangles list
     for (ColoredRec coloredRectangle : coloredRectangles) {
-        int x = coloredRectangle.getX();
-        int y = coloredRectangle.getY();
-        int width = coloredRectangle.getWidth();
-        int height = coloredRectangle.getHeight();
-        
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
-    }
-    
-    
-    
-    
+            int x = coloredRectangle.getX() * tileSize + cameraOffsetX;
+            int y = coloredRectangle.getY() * tileSize + cameraOffsetY;
+            int iconWidth = fillIcon.getIconWidth();
+            int iconHeight = fillIcon.getIconHeight();
 
-    // Draw the snake
-    for (Point segment : snake) {
-        g2d.setColor(Color.CYAN);
-        int x = segment.x * tileSize + cameraOffsetX;
-        int y = segment.y * tileSize + cameraOffsetY;
-        g2d.fillRect(x, y, tileSize, tileSize);
+            // Draw the icon for each 1x1 rectangle
+            for (int i = 0; i < coloredRectangle.getWidth(); i++) {
+                for (int j = 0; j < coloredRectangle.getHeight(); j++) {
+                    fillIcon.paintIcon(this, g2d, x + i * iconWidth, y + j * iconHeight);
+                }
+            }
+        }
+    
+//    // Draw the snake
+//    for (Point segment : snake) {
+//        g2d.setColor(Color.CYAN);
+//        int x = segment.x * tileSize + cameraOffsetX;
+//        int y = segment.y * tileSize + cameraOffsetY;
+//        g2d.fillRect(x, y, tileSize, tileSize);
+//    }
+    if (!snake.isEmpty()) {
+        Point head = snake.getFirst();
+        int x = head.x * tileSize + cameraOffsetX;
+        int y = head.y * tileSize + cameraOffsetY;
+        snakeHeadIcon.paintIcon(this, g2d, x, y);
     }
 
     // Draw "Game Over" message 
@@ -409,6 +419,25 @@ private boolean prevRects(Point point) {
     }
 
     return false;
+}
+private void visualSelect(String character){
+    switch(character){
+        case "BATMAN":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\BatmanInGame.png");
+            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\batPath.png");
+            fillIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\batFill.png");
+            break;
+        case "PENNY":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\PennyInGame.png");
+            break;
+        case "RICK":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\RickInGame.png");
+            break;
+        case "WALTER":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\WalterInGame.png");
+            break;
+    }
+
 }
 private void spawningEnemies(int enemyCount) {
     for (int i = 0; i < enemyCount; i++) {

@@ -125,15 +125,12 @@ public class InputSelect extends javax.swing.JFrame {
                         int weaponAammo = gameMenu.getWeaponAammo();
                         int weaponBrecharge = gameMenu.getWeaponBrecharge();
                         int enemiesSpeed = gameMenu.getEnemiesSpeed();
-                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed);
-
-
+                        String character = gameMenu.getCharacterName();
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed,character);
                         gamePanel.setUseMouseControls(useMouseControls);
                         gamePanel.setUseKeyboardControls(useKeyboardControls);
-
                         frame.add(gamePanel);
-
-                        frame.pack();
+                        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         frame.setVisible(true);
 
                         gamePanel.startGameThread();
@@ -146,6 +143,7 @@ public class InputSelect extends javax.swing.JFrame {
         useKeyboardControls = true;
         setVisible(false);
                         JFrame frame = new JFrame();
+                        
                         frame.setTitle("paint.io Game");
                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frame.setResizable(true);
@@ -155,16 +153,15 @@ public class InputSelect extends javax.swing.JFrame {
                         int weaponAammo = gameMenu.getWeaponAammo();
                         int weaponBrecharge = gameMenu.getWeaponBrecharge();
                         int enemiesSpeed = gameMenu.getEnemiesSpeed();
-                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed);
+                        String character = gameMenu.getCharacterName();
+                        GamePanel gamePanel = new GamePanel(speedN,enemyNum,weaponAammo,weaponBrecharge,enemiesSpeed,character);
 
 
                         // Set the chosen input mode in the GamePanel
                         gamePanel.setUseMouseControls(useMouseControls);
                         gamePanel.setUseKeyboardControls(useKeyboardControls);
-
                         frame.add(gamePanel);
-
-                        frame.pack();
+                        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         frame.setVisible(true);
 
                         gamePanel.startGameThread();
