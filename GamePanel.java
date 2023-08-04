@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     private int enemiesSpeed;
     private ImageIcon snakeHeadIcon;
     private ImageIcon pathIcon;
-    private ImageIcon fillIcon;
+    private Color fillColor;
 
     final int boxSize = 9; 
     final int boxX = 6; // X-coordinate of the box's top-left corner
@@ -110,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable {
         enemyNum.enemyDraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
     }
     // Draw the box
-    g2d.setColor(Color.WHITE);
+    g2d.setColor(fillColor);
     g2d.fillRect(boxX * tileSize + cameraOffsetX, boxY * tileSize + cameraOffsetY, boxSize * tileSize, boxSize * tileSize);
 
     // Draw the path
@@ -129,19 +129,15 @@ public class GamePanel extends JPanel implements Runnable {
         weapon2.weaponBdraw(g2d, tileSize, cameraOffsetX, cameraOffsetY);
     }
     // Draw the colored rectangles from the coloredRectangles list
-    for (ColoredRec coloredRectangle : coloredRectangles) {
-            int x = coloredRectangle.getX() * tileSize + cameraOffsetX;
-            int y = coloredRectangle.getY() * tileSize + cameraOffsetY;
-            int iconWidth = fillIcon.getIconWidth();
-            int iconHeight = fillIcon.getIconHeight();
+     for (ColoredRec coloredRectangle : coloredRectangles) {
+        int x = coloredRectangle.getX();
+        int y = coloredRectangle.getY();
+        int width = coloredRectangle.getWidth();
+        int height = coloredRectangle.getHeight();
 
-            // Draw the icon for each 1x1 rectangle
-            for (int i = 0; i < coloredRectangle.getWidth(); i++) {
-                for (int j = 0; j < coloredRectangle.getHeight(); j++) {
-                    fillIcon.paintIcon(this, g2d, x + i * iconWidth, y + j * iconHeight);
-                }
-            }
-        }
+        g2d.setColor(fillColor);
+        g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
+    }
     
 //    // Draw the snake
 //    for (Point segment : snake) {
@@ -425,16 +421,22 @@ private void visualSelect(String character){
         case "BATMAN":
             snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\BatmanInGame.png");
             pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\batPath.png");
-            fillIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\batFill.png");
+            fillColor = Color.BLACK;
             break;
         case "PENNY":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\PennyInGame.png");
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\PennyInMenu.png");
+            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\pennyPath.png");
+            fillColor = Color.RED;
             break;
         case "RICK":
             snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\RickInGame.png");
+            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\rickpath.png");
+            fillColor = Color.GREEN;
             break;
         case "WALTER":
             snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\WalterInGame.png");
+            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\walterPath.png");
+            fillColor = Color.WHITE;
             break;
     }
 
