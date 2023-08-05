@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +39,8 @@ public class Enemy {
     private Timer directionTimer;
     private boolean canChangeMove;
     private long rechargeTime; 
+    private LinkedList<String> headIconPath;
+    private LinkedList<String> pathIconPath;
 
     
 
@@ -57,6 +61,8 @@ public class Enemy {
         enemyColor = enemyColors[0];
         enemyHcolor = enemyColors[1];
         Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
+        IconsPaths();
+        visualSelect();
     }
         public LinkedList<Point> getEnemyPath() {
         return path;
@@ -247,11 +253,45 @@ public class Enemy {
     }
         }
     }  
-    }
-    
-    
+    }    
     path.clear();
+  
 }
+        
+        private void IconsPaths() {
+
+        headIconPath = new LinkedList<>();
+        headIconPath.add("path/to/enemy_head_image_1.png");
+        headIconPath.add("path/to/enemy_head_image_2.png");
+
+       /* pathIconPath = new LinkedList<>();
+        pathIconPath.add("path/to/enemy_box_image_1.png");
+        pathIconPath.add("path/to/enemy_box_image_2.png");*/
+
+    }
+        public void visualSelect(){
+        
+         String selectedHeadImagePath = getRandomImagePath(headIconPath);
+        headIconPath = new ImageIcon(selectedHeadImagePath);
+
+       /* // Load the enemy path icon
+        String selectedBoxImagePath = getRandomImagePath(pathIconPath);
+        pathIconPath = new ImageIcon(selectedBoxImagePath);
+        
+        */
+        
+        
+        }
+        private String getRandomImagePath(LinkedList<String> imagePaths) {
+        int numberOfImages = imagePaths.size();
+        if (numberOfImages == 0) {
+            return null;
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(numberOfImages);
+        return imagePaths.get(randomIndex);
+    }
        
         public void removeEnemy() {
         Esnake.clear();
