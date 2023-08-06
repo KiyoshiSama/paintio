@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     private boolean useKeyboardControls = false;
     private Clickhandler mouseIn;
     private ImageIcon gameOverImg;
+    private ImageIcon winnerImg;
     private WeaponA weapon;
     private WeaponB weapon2;
     private ArrayList<Enemy> enemies;    
@@ -86,7 +87,8 @@ public class GamePanel extends JPanel implements Runnable {
         FPS = speedN;
         cameraOffsetX = 0;
         cameraOffsetY = 0;
-        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\GameOver.jpg");
+        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Announces\\GameOver.jpg");
+        winnerImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Announces\\Winner.jpg");
         visualSelect(character);
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         //make the snake move to the right direction initially
@@ -139,13 +141,6 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.fillRect(x * tileSize + cameraOffsetX, y * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
     }
     
-//    // Draw the snake
-//    for (Point segment : snake) {
-//        g2d.setColor(Color.CYAN);
-//        int x = segment.x * tileSize + cameraOffsetX;
-//        int y = segment.y * tileSize + cameraOffsetY;
-//        g2d.fillRect(x, y, tileSize, tileSize);
-//    }
     if (!snake.isEmpty()) {
         Point head = snake.getFirst();
         int x = head.x * tileSize + cameraOffsetX;
@@ -155,8 +150,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw "Game Over" message 
     if (gameOver) {
-        gameOverImg.paintIcon(null, g2d, getWidth() / 2 - 300, getHeight() / 2 - 300);
-      //  restartButton.setVisible(true); // Show the restart button
+        if (enemies.isEmpty()){
+        winnerImg.paintIcon(null, g2d, 600, 200);
+        }
+        else{
+        gameOverImg.paintIcon(null, g2d, 625, 210);
+        }
+      
     }
     
 
@@ -416,31 +416,6 @@ private boolean prevRects(Point point) {
 
     return false;
 }
-private void visualSelect(String character){
-    switch(character){
-        case "BATMAN":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\BatmanInGame.png");
-            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\batPath.png");
-            fillColor = Color.BLACK;
-            break;
-        case "PENNY":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\PennyInMenu.png");
-            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\pennyPath.png");
-            fillColor = Color.RED;
-            break;
-        case "RICK":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\RickInGame.png");
-            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\rickpath.png");
-            fillColor = Color.GREEN;
-            break;
-        case "WALTER":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\WalterInGame.png");
-            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\Pics\\Fill\\walterPath.png");
-            fillColor = Color.WHITE;
-            break;
-    }
-
-}
 private void spawningEnemies(int enemyCount) {
     for (int i = 0; i < enemyCount; i++) {
         generateEnemy();
@@ -474,6 +449,33 @@ public void generateEnemy() {
         enemies.add(new Enemy(EboxX, EboxY,enemiesSpeed));
     }
 }
+
+private void visualSelect(String character){
+    switch(character){
+        case "BATMAN":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\BatmanInGame.png");
+            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\batPath.png");
+            fillColor = Color.BLACK;
+            break;
+        case "PENNY":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\PennyInGame.png.png");
+            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\pennyPath.png");
+            fillColor = Color.RED;
+            break;
+        case "RICK":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\RickInGame.png");
+            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\rickpath.png");
+            fillColor = Color.GREEN;
+            break;
+        case "WALTER":
+            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\WalterInGame.png");
+            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\walterPath.png");
+            fillColor = Color.WHITE;
+            break;
+    }
+
+}
+
 
 
  private boolean isPositionFarFromOthers(int x, int y) {
@@ -524,4 +526,5 @@ private void checkEnemyCollisions() {
 //adding texture
 //changing the movement algorithm
 //add to readme: bullet size are 1 by default and it is hard to hit the enemies, if you want to check it works correctly, change ots value
+//whenever mouse movement is selected keyboard should not be avaualbe
 }

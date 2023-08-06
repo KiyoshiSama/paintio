@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.HashSet;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +34,8 @@ public class Enemy {
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
     private Point EsnakeHead;
+        private Set<Integer> generatedNumbers;
+
     private Rectangle box ;
     private Color[] enemyColors ;
     private Color enemyColor;
@@ -39,8 +43,8 @@ public class Enemy {
     private Timer directionTimer;
     private boolean canChangeMove;
     private long rechargeTime; 
-    private LinkedList<String> headIconPath;
-    private LinkedList<String> pathIconPath;
+    private ImageIcon headIcon;
+    private ImageIcon pathIcon;
 
     
 
@@ -52,6 +56,7 @@ public class Enemy {
         Esnake = new LinkedList<>();
         rechargeTime = enemiesSpeed;
         path = new LinkedList<>();
+        generatedNumbers = new HashSet<>();
         coloredRectangles = new LinkedList<>();
         pathColors = new LinkedList<>();
         box = new Rectangle(boxX * tileSize, boxY * tileSize, boxSize * tileSize, boxSize * tileSize);
@@ -61,7 +66,6 @@ public class Enemy {
         enemyColor = enemyColors[0];
         enemyHcolor = enemyColors[1];
         Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
-        IconsPaths();
         visualSelect();
     }
         public LinkedList<Point> getEnemyPath() {
@@ -86,10 +90,10 @@ public class Enemy {
         
         // Draw the path and store the colors in pathColors
         for (int i = 0; i < path.size(); i++) {
-            Point segment = path.get(i);
-            g2d.setColor(enemyColor);
-            g2d.fillRect(segment.x * tileSize + cameraOffsetX, segment.y * tileSize + cameraOffsetY, tileSize, tileSize);
-            pathColors.add(enemyColor); // Store the color in pathColors
+        Point segment = path.get(i);
+        int x = segment.x * tileSize + cameraOffsetX;
+        int y =  segment.y * tileSize + cameraOffsetY;
+        pathIcon.paintIcon(null, g2d, x, y);
     }
 
         // Draw the colored rectangles
@@ -102,11 +106,12 @@ public class Enemy {
             g2d.fillRect(recX * tileSize + cameraOffsetX, recY * tileSize + cameraOffsetY, height * tileSize, width * tileSize);
         }
         // Draw the Esnake
-        for (Point segment : Esnake) {
-        g2d.setColor(enemyHcolor);
-        int EsnakeX = segment.x * tileSize + cameraOffsetX;
-        int EsnakeY = segment.y * tileSize + cameraOffsetY;
-        g2d.fillRect(EsnakeX, EsnakeY, tileSize, tileSize);
+        if (!Esnake.isEmpty()) {
+        Point head = Esnake.getFirst();
+        int x = head.x * tileSize + cameraOffsetX;
+        int y = head.y * tileSize + cameraOffsetY;
+        headIcon.paintIcon(null, g2d, x, y);
+    
     }
     }
 
@@ -155,8 +160,8 @@ public class Enemy {
                  // Move the snake's head
                 Esnake.addFirst(new Point(nextX, nextY));
                 Esnake.removeLast();
-                            canChangeMove = false;
-                                    directionTimer.schedule(new DirectionChangeTask(), rechargeTime);
+                canChangeMove = false;
+                directionTimer.schedule(new DirectionChangeTask(), rechargeTime);
 
             }
 
@@ -257,41 +262,66 @@ public class Enemy {
     path.clear();
   
 }
-        
-        private void IconsPaths() {
 
-        headIconPath = new LinkedList<>();
-        headIconPath.add("path/to/enemy_head_image_1.png");
-        headIconPath.add("path/to/enemy_head_image_2.png");
-
-       /* pathIconPath = new LinkedList<>();
-        pathIconPath.add("path/to/enemy_box_image_1.png");
-        pathIconPath.add("path/to/enemy_box_image_2.png");*/
-
-    }
         public void visualSelect(){
         
-         String selectedHeadImagePath = getRandomImagePath(headIconPath);
-        headIconPath = new ImageIcon(selectedHeadImagePath);
+       Random random = new Random();
+        int maxNumber = 10; // highset number
+            int randomNumber;
 
-       /* // Load the enemy path icon
-        String selectedBoxImagePath = getRandomImagePath(pathIconPath);
-        pathIconPath = new ImageIcon(selectedBoxImagePath);
+        do {
+        randomNumber = random.nextInt(maxNumber)+1 ;
+        } while (generatedNumbers.contains(randomNumber));
         
-        */
+        generatedNumbers.add(randomNumber);
+        
+        switch (randomNumber) {
+    case 1:
+        headIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\anonymous.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\chip.png");
+        break;
+    case 2:
+        headIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\alien.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\moonphase.png");
+        break;
+    case 3:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\dali.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\money.png");
+        break;
+    case 4:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\darthvader.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\crown.png");
+        break;
+    case 5:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\jason.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\blood.png");
+        break;
+    case 6:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\joker.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\spades.png");
+        break;
+    case 7:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\morty.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\summer.png");
+        break;
+    case 8:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\scream.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\knife.png");
+        break;
+    case 9:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\starks.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\star.png");
+        break;
+    case 10:
+        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Enemies\\supermario.png");
+        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\EnemiesFill\\diamond.png");
+        break;
+}
+       
         
         
         }
-        private String getRandomImagePath(LinkedList<String> imagePaths) {
-        int numberOfImages = imagePaths.size();
-        if (numberOfImages == 0) {
-            return null;
-        }
 
-        Random random = new Random();
-        int randomIndex = random.nextInt(numberOfImages);
-        return imagePaths.get(randomIndex);
-    }
        
         public void removeEnemy() {
         Esnake.clear();
