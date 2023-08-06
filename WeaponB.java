@@ -4,12 +4,15 @@ package paintio.paintio;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.ImageIcon;
 
 public class WeaponB {
     private boolean isShooting;
@@ -20,6 +23,7 @@ public class WeaponB {
     private int bulletSize;
     private int bulletSpeed;
     private int maxBulletDistance;
+    private ImageIcon bulletIcon;
     private final long rechargeTime; 
 
     public WeaponB(ArrayList<Enemy> enemies, int weaponBrecharge) {
@@ -30,7 +34,8 @@ public class WeaponB {
         canShoot = true;
         bulletSize = 1;
         bulletSpeed = 2;
-        maxBulletDistance = 1000; 
+        maxBulletDistance = 1000;
+        bulletIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\bullet.png");
     }
 
     public boolean isShooting() {
@@ -45,6 +50,7 @@ public class WeaponB {
             canShoot = false;
             rechargeTimer = new Timer();
             rechargeTimer.schedule(new RechargeTask(), rechargeTime);
+
         }
     }
 
@@ -55,7 +61,32 @@ public class WeaponB {
         for (Bullet bullet : bullets) {
             bullet.move(bulletSpeed);
 
-            g2d.fillRect(bullet.getX() * tileSize + cameraOffsetX, bullet.getY() * tileSize + cameraOffsetY, bulletSize *tileSize, bulletSize*tileSize);
+        Image bulletImage = bulletIcon.getImage();
+
+        // Calculate rotation angle based on the snake's direction
+        double rotationAngle = 0;
+        switch (bullet.direction) {
+            case "UP":
+                rotationAngle = -Math.PI / 2;
+                break;
+            case "DOWN":
+                rotationAngle = Math.PI / 2;
+                break;
+            case "LEFT":
+                rotationAngle = Math.PI; 
+                break;
+            case "RIGHT":
+                rotationAngle = 0;
+                break;
+        }
+        AffineTransform rotationTransform = new AffineTransform();
+        rotationTransform.rotate(rotationAngle, bullet.getX() * tileSize + cameraOffsetX + tileSize / 2, bullet.getY() * tileSize + cameraOffsetY + tileSize / 2);
+        g2d.setTransform(rotationTransform);
+
+        g2d.drawImage(bulletImage, bullet.getX() * tileSize + cameraOffsetX, bullet.getY() * tileSize + cameraOffsetY, bulletSize * tileSize, bulletSize * tileSize, null);
+
+        g2d.setTransform(new AffineTransform());
+
 
             if (bullet.getDistance() > maxBulletDistance) {
                 bulletsToRemove.add(bullet);
