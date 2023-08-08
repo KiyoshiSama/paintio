@@ -36,7 +36,7 @@ public class WeaponB {
         bulletSize = 1;
         bulletSpeed = 2;
         maxBulletDistance = 1000;
-        bulletIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\bullet.png");
+        bulletIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Elements\\bullet.png");
     }
 
     public boolean isShooting() {
