@@ -1,14 +1,12 @@
 package paintio.paintio;
 
-import java.awt.Color;
-import java.awt.Graphics;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
 
 public class Clickhandler extends MouseAdapter {
@@ -31,11 +29,10 @@ public class Clickhandler extends MouseAdapter {
     
 
     public Clickhandler() {
-        arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\U.png");
-        arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\D.png");
-        arrowLeftImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\L.png");
-        arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\R.png");
-        // Initialize the mouse arrow rectangle bounds (adjust coordinates as needed)
+        arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\U.png");
+        arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\D.png");
+        arrowLeftImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\L.png");
+        arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\R.png");
         arrowUpRect = new Rectangle(1600, 500, arrowUpImage.getIconWidth(), arrowUpImage.getIconHeight());
         arrowDownRect = new Rectangle(1600, 700, arrowDownImage.getIconWidth(), arrowDownImage.getIconHeight());
         arrowLeftRect = new Rectangle(1450, 630, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());
@@ -47,8 +44,6 @@ public class Clickhandler extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         Point mousePoint = e.getPoint();
         int click = e.getButton();
-        //int MouseEvent.BUTTON3
-       // e.MouseEvent
         up = false;
         down = false;
         left = false;

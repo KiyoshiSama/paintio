@@ -35,7 +35,7 @@ public class GameMenu extends javax.swing.JFrame {
         Penny = new javax.swing.JLabel();
         Walter = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        Rick = new javax.swing.JLabel();
         enemyCount = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,23 +99,23 @@ public class GameMenu extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("TNC_F1", 0, 20)); // NOI18N
-        jLabel1.setText(" 1 , 2  , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10");
+        jLabel1.setText(" 1 , 2  , 3 , 4 ,  5 , 6 , 7 ,  8 , 9 , 10");
 
-        Batman.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/player/BatmanMenu.png"))); // NOI18N
+        Batman.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintio/paintio/resources/player/BatmanMenu.png"))); // NOI18N
         Batman.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BatmanMouseClicked(evt);
             }
         });
 
-        Penny.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/player/PennyMenu.png"))); // NOI18N
+        Penny.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintio/paintio/resources/player/PennyMenu.png"))); // NOI18N
         Penny.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 PennyMouseClicked(evt);
             }
         });
 
-        Walter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/player/WalterMenu.png"))); // NOI18N
+        Walter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintio/paintio/resources/player/WalterMenu.png"))); // NOI18N
         Walter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 WalterMouseClicked(evt);
@@ -127,10 +127,10 @@ public class GameMenu extends javax.swing.JFrame {
         jLabel6.setText("Choose your character");
         jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/player/RickMenu.png"))); // NOI18N
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        Rick.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintio/paintio/resources/player/RickMenu.png"))); // NOI18N
+        Rick.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                RickMouseClicked(evt);
             }
         });
 
@@ -160,7 +160,7 @@ public class GameMenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Penny)
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel2)
+                        .addComponent(Rick)
                         .addGap(18, 18, 18)
                         .addComponent(Walter))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -169,7 +169,7 @@ public class GameMenu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(397, 397, 397)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(GameSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(GameSpeed, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextField1)
                                 .addComponent(GameDiff, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -192,18 +192,18 @@ public class GameMenu extends javax.swing.JFrame {
                     .addComponent(Batman)
                     .addComponent(Walter)
                     .addComponent(Penny)
-                    .addComponent(jLabel2))
-                .addGap(76, 76, 76)
+                    .addComponent(Rick))
+                .addGap(41, 41, 41)
                 .addComponent(GameDiff, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(GameSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addGap(46, 46, 46)
                 .addComponent(StartBut, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addComponent(enemyCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(245, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -308,10 +308,10 @@ public class GameMenu extends javax.swing.JFrame {
         characterN = "WALTER";
     }//GEN-LAST:event_WalterMouseClicked
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void RickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RickMouseClicked
         JOptionPane.showMessageDialog(this, "Character selected! ");
         characterN = "RICK";
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_RickMouseClicked
 
     private void enemyCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_enemyCountStateChanged
         enemyNum = enemyCount.getValue();
@@ -381,11 +381,11 @@ public class GameMenu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> GameDiff;
     private javax.swing.JComboBox<String> GameSpeed;
     private javax.swing.JLabel Penny;
+    private javax.swing.JLabel Rick;
     private javax.swing.JButton StartBut;
     private javax.swing.JLabel Walter;
     private javax.swing.JSlider enemyCount;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;

@@ -17,43 +17,47 @@ public class GamePanel extends JPanel implements Runnable {
     private LinkedList<Point> snake;
     private LinkedList<Point> path;
     private LinkedList<ColoredRec> coloredRectangles;
+    private ArrayList<Enemy> enemies;
+    
+    
+    
     private boolean useMouseControls = false;
     private boolean useKeyboardControls = false;
-    private Clickhandler mouseIn;
-    private ImageIcon gameOverImg;
-    private ImageIcon winnerImg;
-    private WeaponA weapon;
-    private WeaponB weapon2;
-    private ArrayList<Enemy> enemies;    
-    private int originalTileSize = 16;
-    private int scale = 3;
-    private int tileSize = originalTileSize * scale;
     private boolean gameOver;
     private boolean isFirstEnemyAdded = false;
     private boolean isOutsideBox;
+    
+    private Clickhandler mouseIn;
+    private ImageIcon gameOverImg;
+    private ImageIcon winnerImg;
+    private ImageIcon snakeHeadIcon;
+    private ImageIcon pathIcon;
+    private WeaponA weapon;
+    private WeaponB weapon2;
+    private Keyhandler keyIn ;
+    private Rectangle box ;
+    private Point snakeHead;
+    private Color fillColor;
+    
+    private int minX = Integer.MAX_VALUE;
+    private int minY = Integer.MAX_VALUE;
+    private int maxX = Integer.MIN_VALUE;
+    private int maxY = Integer.MIN_VALUE;
+    private int originalTileSize = 16;
+    private int scale = 3;
+    private int tileSize = originalTileSize * scale;
     private int nextX;
     private int nextY;
     private int enemyNumber;
-    int minX = Integer.MAX_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int maxY = Integer.MIN_VALUE;
     private int cameraOffsetX; 
     private int cameraOffsetY; 
     private int EboxX;
     private int EboxY;
     private int FPS  ; 
-    private Keyhandler keyIn ;
-    private Rectangle box ;
-    private Point snakeHead;
     private int enemiesSpeed;
-    private ImageIcon snakeHeadIcon;
-    private ImageIcon pathIcon;
-    private Color fillColor;
-
-    final int boxSize = 9; 
-    final int boxX = 6; // X-coordinate of the box's top-left corner
-    final int boxY = 6; // Y-coordinate of the box's top-left corner
+    private int boxSize = 9; 
+    private int boxX = 6; // X-coordinate of the box's top-left corner
+    private int boxY = 6; // Y-coordinate of the box's top-left corner
 
     Thread gameThread;
 
@@ -87,8 +91,8 @@ public class GamePanel extends JPanel implements Runnable {
         FPS = speedN;
         cameraOffsetX = 0;
         cameraOffsetY = 0;
-        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Announces\\GameOver.jpg");
-        winnerImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\Announces\\Winner.jpg");
+        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Announces\\GameOver.jpg");
+        winnerImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Announces\\Winner.jpg");
         visualSelect(character);
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         //make the snake move to the right direction initially
@@ -203,7 +207,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameOver ) return; // Return if the game is over
+        if (gameOver ) return; 
         // Move the snake in the current direction
         nextX = snake.getFirst().x;
         nextY = snake.getFirst().y;
@@ -330,34 +334,34 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-private void fillBlock() {
-    for (Point point : path) {
-    int x = point.x;
-    int y = point.y;
+        private void fillBlock() {
+            for (Point point : path) {
+            int x = point.x;
+            int y = point.y;
 
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x);
-    maxY = Math.max(maxY, y);
-}
-    for (int i = path.size() - 1; i >= 0; i--) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        
-        int modY = y + 1;
-        Point currentPoint;
-        Color color = Color.WHITE; // Set the default color for rectangles
-        if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
         }
-        else{
-        for (int k = 0; k < maxY- minY; k++) {
-            currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
-                modY++;
-            } else {
+            for (int i = path.size() - 1; i >= 0; i--) {
+                int x = path.get(i).x;
+                int y = path.get(i).y;
+
+                int modY = y + 1;
+                Point currentPoint;
+                Color color = Color.WHITE; // Set the default color for rectangles
+                if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
+                ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
+                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                }
+                else{
+                for (int k = 0; k < maxY- minY; k++) {
+                    currentPoint = new Point(x, modY);
+                    Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
+                    if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
+                        modY++;
+                    } else {
                 modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y,1 ,modY - y, color);
                 coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
@@ -368,35 +372,35 @@ private void fillBlock() {
     }
         
     }
-    
-    for (int i = 0; i <= path.size()-1; i++) {
-        int x = path.get(i).x;
-        int y = path.get(i).y;
-        if (!prevRects(path.get(i))){
-        int modY = y - 1;
-        Color color = Color.WHITE; // Set the default color for rectangles
-        Point currentPoint;
-      if (path.contains(new Point(x,modY))){
-        ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-        }
-      else{
-        for (int k = 0; k < maxY- minY; k++) {
-            currentPoint = new Point(x, modY);
-            Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
-            if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
-                modY--;
-            } else {
-                ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
-               
-                break;
-            }
 
-    }
+        for (int i = 0; i <= path.size()-1; i++) {
+            int x = path.get(i).x;
+            int y = path.get(i).y;
+            if (!prevRects(path.get(i))){
+            int modY = y - 1;
+            Color color = Color.WHITE; // Set the default color for rectangles
+            Point currentPoint;
+          if (path.contains(new Point(x,modY))){
+            ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
+            coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+            }
+          else{
+            for (int k = 0; k < maxY- minY; k++) {
+                currentPoint = new Point(x, modY);
+                Rectangle currentRect = new Rectangle(x * tileSize, modY * tileSize, tileSize, tileSize);
+                if (!path.contains(currentPoint) && !box.intersects(currentRect) && !prevRects(currentPoint) ) {
+                    modY--;
+                } else {
+                    ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
+                    coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+
+                    break;
+                }
+
         }
-    }  
-    }
+            }
+        }  
+        }
     
     
     path.clear();
@@ -450,31 +454,31 @@ public void generateEnemy() {
     }
 }
 
-private void visualSelect(String character){
-    switch(character){
-        case "BATMAN":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\BatmanInGame.png");
-            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\batPath.png");
-            fillColor = Color.BLACK;
-            break;
-        case "PENNY":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\PennyInGame.png.png");
-            pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\pennyPath.png");
-            fillColor = Color.RED;
-            break;
-        case "RICK":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\RickInGame.png");
-            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\rickpath.png");
-            fillColor = Color.GREEN;
-            break;
-        case "WALTER":
-            snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\player\\WalterInGame.png");
-            pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\resources\\playerFill\\walterPath.png");
-            fillColor = Color.WHITE;
-            break;
-    }
+        private void visualSelect(String character){
+            switch(character){
+                case "BATMAN":
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\BatmanInGame.png");
+                    pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\batPath.png");
+                    fillColor = Color.BLACK;
+                    break;
+                case "PENNY":
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\PennyInGame.png");
+                    pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\pennyPath.png");
+                    fillColor = Color.RED;
+                    break;
+                case "RICK":
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\RickInGame.png");
+                    pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\rickpath.png");
+                    fillColor = Color.GREEN;
+                    break;
+                case "WALTER":
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\WalterInGame.png");
+                    pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\walterPath.png");
+                    fillColor = Color.WHITE;
+                    break;
+            }
 
-}
+        }
 
 
 
@@ -509,22 +513,14 @@ private void checkEnemyCollisions() {
 }
 
 
- //add color select for snake
 //snake and enemies paint over each other
-//if the new direction in the enemy clas != with previous, do it again
-// create a winner screen
-//adding a delay beetween guntrail and box creating
-//when the enemy is inside its own box, its not being nlimnited
-//should debug the weaponA fully
+
 //add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
-//replace prevrects with .contains
 ////add to readme: we dont have 189 degree rotation at this game
-//showing ammo counts
 //mouse movement doesn't work
 //add to readme : key hints
 //arrows for mouse movements doesn't work
-//adding texture
-//changing the movement algorithm
 //add to readme: bullet size are 1 by default and it is hard to hit the enemies, if you want to check it works correctly, change ots value
 //whenever mouse movement is selected keyboard should not be avaualbe
+//update the images in gitub
 }
