@@ -15,32 +15,31 @@ import java.util.TimerTask;
 
 public class Enemy {
     
-    private int originalTileSize = 16;
-    private int scale = 3;
-    private int tileSize = originalTileSize * scale;
+    
     private LinkedList<Point> Esnake;
     private LinkedList<Point> path;
     private LinkedList<ColoredRec> coloredRectangles;
+    private Set<Integer> generatedNumbers;
     private boolean isOutsideBox;
-    boolean isValidMove;
+    private boolean isValidMove;
+    private boolean canChangeMove;
     private int boxX;
     private int boxY;
     private int boxSize = 9;
     private int nextX;
     private int nextY;
-    int minX = Integer.MAX_VALUE;
-    int minY = Integer.MAX_VALUE;
-    int maxX = Integer.MIN_VALUE;
-    int maxY = Integer.MIN_VALUE;
+    private int originalTileSize = 16;
+    private int scale = 3;
+    private int tileSize = originalTileSize * scale;
+    private int minX = Integer.MAX_VALUE;
+    private int minY = Integer.MAX_VALUE;
+    private int maxX = Integer.MIN_VALUE;
+    private int maxY = Integer.MIN_VALUE;
     private Point EsnakeHead;
-        private Set<Integer> generatedNumbers;
-
     private Rectangle box ;
     private Color[] enemyColors ;
     private Color enemyColor;
-    private Color enemyHcolor;
     private Timer directionTimer;
-    private boolean canChangeMove;
     private long rechargeTime; 
     private ImageIcon headIcon;
     private ImageIcon pathIcon;
@@ -62,7 +61,6 @@ public class Enemy {
         randomColor();
         enemyColors = randomColor();
         enemyColor = enemyColors[0];
-        enemyHcolor = enemyColors[1];
         Esnake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         visualSelect();
     }
@@ -209,7 +207,7 @@ public class Enemy {
         Color color = Color.WHITE;
         if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
         ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        coloredRectangles.addFirst(coloredRectangle); 
         }
         else{
         for (int k = 0; k < maxY- minY; k++) {
@@ -220,7 +218,7 @@ public class Enemy {
             } else {
                 modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y,1 ,modY - y, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                coloredRectangles.addFirst(coloredRectangle); 
                
                 break;
             }
@@ -238,7 +236,7 @@ public class Enemy {
         Point currentPoint;
       if (path.contains(new Point(x,modY))){
         ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-        coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+        coloredRectangles.addFirst(coloredRectangle); 
         }
       else{
         for (int k = 0; k < maxY- minY; k++) {
@@ -248,7 +246,7 @@ public class Enemy {
                 modY--;
             } else {
                 ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                coloredRectangles.addFirst(coloredRectangle); 
                
                 break;
             }

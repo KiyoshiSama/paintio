@@ -18,11 +18,11 @@ public class Clickhandler extends MouseAdapter {
     public boolean down;
     public boolean left;
     public boolean right;
+    public boolean rightClick,leftClick;
     private ImageIcon arrowUpImage;
     private ImageIcon arrowDownImage;
     private ImageIcon arrowLeftImage;
     private ImageIcon arrowRightImage;
-    public boolean rightClick,leftClick;
     public String lastDirection = "RIGHT";
 
 
@@ -35,8 +35,8 @@ public class Clickhandler extends MouseAdapter {
         arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\R.png");
         arrowUpRect = new Rectangle(1600, 500, arrowUpImage.getIconWidth(), arrowUpImage.getIconHeight());
         arrowDownRect = new Rectangle(1600, 700, arrowDownImage.getIconWidth(), arrowDownImage.getIconHeight());
-        arrowLeftRect = new Rectangle(1450, 630, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());
-        arrowRightRect = new Rectangle(1680, 630, arrowRightImage.getIconWidth(), arrowRightImage.getIconHeight());
+        arrowLeftRect = new Rectangle(1515, 600, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());
+        arrowRightRect = new Rectangle(1680, 600, arrowRightImage.getIconWidth(), arrowRightImage.getIconHeight());
 
     }
 

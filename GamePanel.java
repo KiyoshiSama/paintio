@@ -244,7 +244,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         }
          if (useMouseControls) {
-             String direction = keyIn.getLastDirection();
+             String direction = mouseIn.getLastDirection();
             weapon.setLastSnakeDirection(direction); // Set the last direction in the WeaponA class
              if(direction != null){
             switch (direction) {
@@ -350,10 +350,10 @@ public class GamePanel extends JPanel implements Runnable {
 
                 int modY = y + 1;
                 Point currentPoint;
-                Color color = Color.WHITE; // Set the default color for rectangles
+                Color color = Color.WHITE; 
                 if (path.contains(new Point(x,modY))&& !prevRects(new Point (x,modY))){
                 ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                coloredRectangles.addFirst(coloredRectangle); 
                 }
                 else{
                 for (int k = 0; k < maxY- minY; k++) {
@@ -364,7 +364,7 @@ public class GamePanel extends JPanel implements Runnable {
                     } else {
                 modY++;
                 ColoredRec coloredRectangle = new ColoredRec(x, y,1 ,modY - y, color);
-                coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                coloredRectangles.addFirst(coloredRectangle); 
                
                 break;
             }
@@ -378,11 +378,11 @@ public class GamePanel extends JPanel implements Runnable {
             int y = path.get(i).y;
             if (!prevRects(path.get(i))){
             int modY = y - 1;
-            Color color = Color.WHITE; // Set the default color for rectangles
+            Color color = Color.WHITE; 
             Point currentPoint;
           if (path.contains(new Point(x,modY))){
             ColoredRec coloredRectangle = new ColoredRec(x, y,1,1, color);
-            coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+            coloredRectangles.addFirst(coloredRectangle); 
             }
           else{
             for (int k = 0; k < maxY- minY; k++) {
@@ -392,7 +392,7 @@ public class GamePanel extends JPanel implements Runnable {
                     modY--;
                 } else {
                     ColoredRec coloredRectangle = new ColoredRec(x, modY,1, y-modY+1, color);
-                    coloredRectangles.addFirst(coloredRectangle); // Add to the new coloredRectangles list
+                    coloredRectangles.addFirst(coloredRectangle);
 
                     break;
                 }
@@ -513,14 +513,14 @@ private void checkEnemyCollisions() {
 }
 
 
-//snake and enemies paint over each other
+
 
 //add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
 ////add to readme: we dont have 189 degree rotation at this game
-//mouse movement doesn't work
+
 //add to readme : key hints
-//arrows for mouse movements doesn't work
+
 //add to readme: bullet size are 1 by default and it is hard to hit the enemies, if you want to check it works correctly, change ots value
-//whenever mouse movement is selected keyboard should not be avaualbe
-//update the images in gitub
+
+
 }

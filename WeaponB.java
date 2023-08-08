@@ -15,11 +15,12 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
 public class WeaponB {
-    private boolean isShooting;
+    
     private LinkedList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
     private Timer rechargeTimer;
     private boolean canShoot;
+    private boolean isShooting;
     private int bulletSize;
     private int bulletSpeed;
     private int maxBulletDistance;

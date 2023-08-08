@@ -11,20 +11,21 @@ import java.util.LinkedList;
 
 
 public class WeaponA {
-    private int ammo;
+    
     private boolean isShooting;
     private ArrayList<Enemy> enemies;
+    private LinkedList<ColoredRec> coloredRectangles;
     private String lastSnakeDirection= "RIGHT";
     private int bulletStartPosX;
     private int bulletStartPosY ;
-    private float redOpacity;//Initial opacity value
-    private LinkedList<ColoredRec> coloredRectangles;
     private int boxOffsetX;
     private int boxOffsetY;
-    private Rectangle Abox;
     private int weaponAsize;
     private int newBoxX;
     private int newBoxY;
+    private int ammo;
+    private float redOpacity;
+    private Rectangle Abox;
 
     public WeaponA(ArrayList<Enemy> enemies,LinkedList<ColoredRec> coloredRectangles,int weaponAammo) {
         ammo = weaponAammo;
