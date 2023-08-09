@@ -38,6 +38,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="66" green="66" red="66" type="rgb"/>
         </Property>
+        <Property name="alignmentX" type="float" value="10.0"/>
       </Properties>
 
       <Layout>
