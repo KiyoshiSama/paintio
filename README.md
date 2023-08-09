@@ -14,4 +14,4 @@ the pictures in the game might not be loaded as you run the game in your system 
 I also provided the windows executable file named PaintIO in quera site. (I prefferd to only upload codes and resources here)
 keyHints: when using keyboard , the player can move with arrows.the paining 3*3 gun works with enter button and the infinite traveler bullet works with space. When using mouse, as you left click the arrow pics on the screen , player's direction changes. when you right click, 3*3 painting gun triggers, when you hit left click , infitie bullet traveler triggers.
 if you don't select anything on the first menu and launch the game, the default values will be: Batman as character, Easy as difficulity, Medium as Speed,1 as the number of enemies. 
-I also added a sample movie of the game working.
+I also added a sample movie of the game working perfectly.
