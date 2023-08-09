@@ -512,15 +512,4 @@ private void checkEnemyCollisions() {
     }
 }
 
-
-
-
-//add to readme: my scale of the game is *3 so I *3 every value you mentioned like weaponA distance
-////add to readme: we dont have 189 degree rotation at this game
-
-//add to readme : key hints
-
-//add to readme: bullet size are 1 by default and it is hard to hit the enemies, if you want to check it works correctly, change ots value
-
-
 }
