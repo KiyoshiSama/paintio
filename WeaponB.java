@@ -1,7 +1,6 @@
 package paintio.paintio;
 
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -36,7 +35,7 @@ public class WeaponB {
         bulletSize = 1;
         bulletSpeed = 2;
         maxBulletDistance = 1000;
-        bulletIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Elements\\bullet.png");
+        bulletIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Elements\\bullet.png");
     }
 
     public boolean isShooting() {

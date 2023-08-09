@@ -273,44 +273,44 @@ public class Enemy {
         
         switch (randomNumber) {
     case 1:
-        headIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\anonymous.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\chip.png");
+        headIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\anonymous.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\chip.png");
         break;
     case 2:
-        headIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\alien.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\moonphase.png");
+        headIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\alien.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\moonphase.png");
         break;
     case 3:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\dali.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\money.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\dali.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\money.png");
         break;
     case 4:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\darthvader.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\crown.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\darthvader.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\crown.png");
         break;
     case 5:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\jason.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\blood.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\jason.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\blood.png");
         break;
     case 6:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\joker.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\joker.png");
         pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\spades.png");
         break;
     case 7:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\morty.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\summer.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\morty.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\summer.png");
         break;
     case 8:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\scream.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\knife.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\scream.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\knife.png");
         break;
     case 9:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\starks.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\star.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\starks.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\star.png");
         break;
     case 10:
-        headIcon =new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Enemies\\supermario.png");
-        pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\EnemiesFill\\diamond.png");
+        headIcon =new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Enemies\\supermario.png");
+        pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\EnemiesFill\\diamond.png");
         break;
 }
        

@@ -29,10 +29,10 @@ public class Clickhandler extends MouseAdapter {
     
 
     public Clickhandler() {
-        arrowUpImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\U.png");
-        arrowDownImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\D.png");
-        arrowLeftImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\L.png");
-        arrowRightImage = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\arrows\\R.png");
+        arrowUpImage = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\arrows\\U.png");
+        arrowDownImage = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\arrows\\D.png");
+        arrowLeftImage = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\arrows\\L.png");
+        arrowRightImage = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\arrows\\R.png");
         arrowUpRect = new Rectangle(1600, 500, arrowUpImage.getIconWidth(), arrowUpImage.getIconHeight());
         arrowDownRect = new Rectangle(1600, 700, arrowDownImage.getIconWidth(), arrowDownImage.getIconHeight());
         arrowLeftRect = new Rectangle(1515, 600, arrowLeftImage.getIconWidth(), arrowLeftImage.getIconHeight());

@@ -91,8 +91,8 @@ public class GamePanel extends JPanel implements Runnable {
         FPS = speedN;
         cameraOffsetX = 0;
         cameraOffsetY = 0;
-        gameOverImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Announces\\GameOver.jpg");
-        winnerImg = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\Announces\\Winner.jpg");
+        gameOverImg = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Announces\\GameOver.jpg");
+        winnerImg = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\Announces\\Winner.jpg");
         visualSelect(character);
         snake.add(new Point(boxX + boxSize / 2, boxY + boxSize / 2));
         //make the snake move to the right direction initially
@@ -457,24 +457,24 @@ public void generateEnemy() {
         private void visualSelect(String character){
             switch(character){
                 case "BATMAN":
-                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\BatmanInGame.png");
-                    pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\batPath.png");
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\player\\BatmanInGame.png");
+                    pathIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\playerFill\\batPath.png");
                     fillColor = Color.BLACK;
                     break;
                 case "PENNY":
-                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\PennyInGame.png");
-                    pathIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\pennyPath.png");
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\player\\PennyInGame.png");
+                    pathIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\playerFill\\pennyPath.png");
                     fillColor = Color.RED;
                     break;
                 case "RICK":
-                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\RickInGame.png");
-                    pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\rickpath.png");
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\player\\RickInGame.png");
+                    pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\playerFill\\rickpath.png");
                     fillColor = Color.GREEN;
                     break;
                 case "WALTER":
-                    snakeHeadIcon = new ImageIcon("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\player\\WalterInGame.png");
-                    pathIcon = new ImageIcon ("C:\\Users\\SkySystem\\Documents\\NetBeansProjects\\paintIO\\src\\paintio\\paintio\\resources\\playerFill\\walterPath.png");
-                    fillColor = Color.WHITE;
+                    snakeHeadIcon = new ImageIcon("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\player\\WalterInGame.png");
+                    pathIcon = new ImageIcon ("C:\\Users\\ASUS\\Desktop\\java\\paintio\\src\\paintio\\paintio\\resources\\playerFill\\walterPath.png");
+                    fillColor = Color.YELLOW;
                     break;
             }
 
