@@ -33,9 +33,5 @@ public class ColoredRec{
         this.color = color;
     }
 
-   /* public void draw(Graphics2D g2d, int tileSize) {
-        g2d.setColor(color);
-        g2d.fillRect(x * tileSize, y * tileSize, tileSize, width * tileSize);
-    }*/
     
 }
